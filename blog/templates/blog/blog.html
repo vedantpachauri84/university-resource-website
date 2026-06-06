@@ -1,0 +1,49 @@
+{% extends "base_or_navbar/navebar.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+```
+<div class="text-center mb-5">
+    <h1 class="fw-bold text-primary">📝 Student Blog</h1>
+    <p class="text-muted">
+        AKTU updates, study tips, coding guides and career advice.
+    </p>
+</div>
+
+{% for blog in blogs %}
+<div class="card shadow-sm mb-4 border-0">
+
+    <div class="card-body">
+
+        <h2 class="card-title">
+            {{ blog.title }}
+        </h2>
+
+        <small class="text-muted">
+            {{ blog.created_at|date:"d M Y" }}
+        </small>
+
+        <hr>
+
+        <p class="card-text">
+            {{ blog.content|linebreaks }}
+        </p>
+
+    </div>
+
+</div>
+{% empty %}
+<div class="text-center">
+    <h4>No Blogs Available</h4>
+    <p class="text-muted">
+        Blogs will appear here when uploaded by admin.
+    </p>
+</div>
+{% endfor %}
+```
+
+</div>
+
+{% endblock content %}

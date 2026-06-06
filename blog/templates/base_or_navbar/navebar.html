@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<nav class="navbar">
+    <div class="logo">
+        <a href="/">AKTU Student Help</a>
+
+    </div>
+
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="{% url 'Notes' %}">Notes</a></li>
+        <li><a href="{% url 'paper' %}">PYQs</a></li>
+        <li><a href="{% url 'Resource'%}">Resources</a></li>
+        <li><a href="{% url 'blog'%}">Blog</a></li>
+
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+
+    </ul>
+
+    <div class="auth-buttons">
+        <a href="{% url 'register' %}" class="register-btn">Register</a>
+        <a href="{% url 'login' %}" class="login-btn">Login</a>
+
+
+        <a href="{% url 'profile' %}"class="register-btn">Profile</a>
+        <a href="{% url 'login' %}" class="register-btn">Logout</a>
+    </div>
+</nav>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+.navbar{
+    position:sticky;
+    top:0;
+    background:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 50px;
+    box-shadow:0 2px 15px rgba(0,0,0,0.08);
+    z-index:1000;
+}
+
+.logo a{
+    text-decoration:none;
+    font-size:24px;
+    font-weight:bold;
+    color:#4f46e5;
+}
+
+.nav-links{
+    display:flex;
+    list-style:none;
+    gap:30px;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:#222;
+    font-weight:500;
+}
+
+.nav-links a:hover{
+    color:#4f46e5;
+}
+
+.auth-buttons{
+    display:flex;
+    gap:10px;
+}
+
+.login-btn{
+    text-decoration:none;
+    padding:10px 18px;
+    border:1px solid #4f46e5;
+    border-radius:8px;
+    color:#4f46e5;
+}
+
+.register-btn{
+    text-decoration:none;
+    padding:10px 18px;
+    border-radius:8px;
+    background:#4f46e5;
+    color:white;
+}
+
+.register-btn:hover,
+.login-btn:hover{
+    opacity:0.9;
+}
+</style>
+
+
+
+{% block content %}
+{% endblock content %}
+
+</body>
+</html>

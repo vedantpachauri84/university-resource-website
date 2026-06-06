@@ -1,0 +1,90 @@
+{% extends "base_or_navbar/navebar.html" %}
+
+{% block content %}
+
+<style>
+    .page-header{
+        text-align:center;
+        margin:40px 0;
+    }
+
+    .page-header h1{
+        font-weight:700;
+        color:#0d6efd;
+    }
+
+    .resource-card{
+        border:none;
+        border-radius:15px;
+        box-shadow:0 4px 15px rgba(0,0,0,0.1);
+        transition:0.3s;
+    }
+
+    .resource-card:hover{
+        transform:translateY(-5px);
+    }
+
+    .download-btn{
+        border-radius:30px;
+        padding:8px 20px;
+    }
+
+    .subject-badge{
+        background:#e9f2ff;
+        color:#0d6efd;
+        padding:5px 12px;
+        border-radius:20px;
+        font-size:14px;
+    }
+</style>
+
+<div class="container py-5">
+
+<div class="page-header">
+    <h1>📚 Resources & Assignments</h1>
+    <p class="text-muted">
+        Download study materials, notes and assignments.
+    </p>
+</div>
+
+<div class="row">
+
+    {% for paper in Resource %}
+    <div class="col-md-6 col-lg-4 mb-4">
+
+        <div class="card resource-card h-100">
+            <div class="card-body">
+
+                <h5 class="card-title">
+                    {{ paper.title }}
+                </h5>
+
+                <p>
+                    <span class="subject-badge">
+                        {{ paper.Subject }}
+                    </span>
+                </p>
+
+                <hr>
+
+                <a href="{{ paper.File.url }}"
+                   class="btn btn-primary download-btn w-100">
+                    Download Resource
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+    {% empty %}
+    <div class="text-center">
+        <h4>No resources available.</h4>
+    </div>
+    {% endfor %}
+
+</div>
+
+
+</div>
+
+{% endblock content %}
