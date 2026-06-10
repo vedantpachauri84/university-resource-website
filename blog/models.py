@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from cloudinary.models import CloudinaryField
 
 class Profile(models.Model):
         user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -16,19 +16,19 @@ class Profile(models.Model):
 class Paper(models.Model):
     title = models.CharField(max_length=100)
     year = models.IntegerField()
-    file=models.FileField(upload_to='Papers/')
+    file=CloudinaryField('file', resource_type='raw',format='pdf')
     def __str__(self):
         return self.title
 class Notes(models.Model):
     title = models.CharField(max_length=100)
     Subject = models.CharField(max_length=100)
-    file=models.FileField(upload_to='Notes/')
+    file=CloudinaryField('file', resource_type='raw',format='pdf')
     def __str__(self):
         return self.title
 class Resources(models.Model):
     title = models.CharField(max_length=100)
     Subject = models.CharField(max_length=100)
-    File = models.FileField(upload_to='Resources/')
+    File = CloudinaryField('file', resource_type='raw',format='pdf')
     def __str__(self):
         return self.title
 class Blog(models.Model):
