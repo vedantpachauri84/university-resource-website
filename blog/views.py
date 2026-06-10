@@ -11,7 +11,6 @@ from django.http import JsonResponse
 from .utils import extract_text, ask_ai
 from django.shortcuts import get_object_or_404
 import requests
-from pypdf import PdfReader
 import tempfile
 
 
@@ -174,33 +173,58 @@ def contact_list(request):
         messages.success(request, "Message sent successfully!")
 
     return render(request, "blog/contact_list.html",{"contact_list": contact_list})
-def run_ai_analysis(text):
-    return f"AI Analysis Completed. Extracted text length: {len(text)}"
 
+import requests
+import tempfile
+import os
 
 def analyze_paper(request, paper_id):
-    paper = get_object_or_404(Paper, id=id)
 
+    paper = get_object_or_404(Paper, id=paper_id)
 
+    # ✅ Use .url instead of .path (Cloudinary fix)
     file_url = paper.file.url
-
-
     response = requests.get(file_url)
 
-    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+    if response.status_code != 200:
+        return render(request, "blog/analysis.html", {
+            "result": "Error: Could not download file from Cloudinary."
+        })
+
+    # ✅ Download to a temp file
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
         tmp.write(response.content)
         tmp_path = tmp.name
 
-    text = ""
-    with open(tmp_path, "rb") as f:
-        reader = PdfReader(f)
-        for page in reader.pages:
-            text += page.extract_text() or ""
+    try:
+        # ✅ Now extract text from the temp file path
+        text = extract_text(tmp_path)
+        text = re.sub(r'\s+', ' ', text)
 
+        prompt = f"""
+You are an expert university exam analyst.
 
-    analysis = run_ai_analysis(text)
+Analyze the following exam paper and return:
 
-    return render(request, "analysis.html", {
-        "paper": paper,
-        "analysis": analysis
-    })
+1. Subject Name
+2. Important Topics
+3. Frequently Asked Concepts
+4. Difficulty Level (Easy/Medium/Hard)
+5. 5 Study Tips
+
+Write the response in proper markdown with headings and bullet points.
+Keep answer under 300 words.
+
+Paper:
+{text[:3000]}
+        """
+
+        result = ask_ai(prompt)
+
+    except Exception as e:
+        result = f"Error during analysis: {str(e)}"
+
+    finally:
+        os.remove(tmp_path)  # ✅ Always clean up temp file
+
+    return render(request, "blog/analysis.html", {"result": result})
