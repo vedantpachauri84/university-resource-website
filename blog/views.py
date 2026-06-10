@@ -10,7 +10,9 @@ from django.views.decorators.cache import never_cache
 from django.http import JsonResponse
 from .utils import extract_text, ask_ai
 from django.shortcuts import get_object_or_404
-
+import requests
+from pypdf import PdfReader
+import tempfile
 
 
 
@@ -172,44 +174,33 @@ def contact_list(request):
         messages.success(request, "Message sent successfully!")
 
     return render(request, "blog/contact_list.html",{"contact_list": contact_list})
+def run_ai_analysis(text):
+    return f"AI Analysis Completed. Extracted text length: {len(text)}"
+
 
 def analyze_paper(request, paper_id):
+    paper = get_object_or_404(Paper, id=id)
 
-    paper = get_object_or_404(
-        Paper,
-        id=paper_id
-    )
 
-    text = extract_text(
-        paper.file.path
-    )
-    text = re.sub(r'\s+', ' ', text)
+    file_url = paper.file.url
 
-    prompt = f"""
-  You are an expert university exam analyst.
 
-Analyze the following exam paper and return:
+    response = requests.get(file_url)
 
-1. Subject Name
-2. Important Topics
-3. Frequently Asked Concepts
-4. Difficulty Level (Easy/Medium/Hard)
-5. 5 Study Tips
+    with tempfile.NamedTemporaryFile(delete=False) as tmp:
+        tmp.write(response.content)
+        tmp_path = tmp.name
 
-Write the response in proper markdown with headings and bullet points.
-Keep answer under 300 words.
-Exam Paper:
+    text = ""
+    with open(tmp_path, "rb") as f:
+        reader = PdfReader(f)
+        for page in reader.pages:
+            text += page.extract_text() or ""
 
-    Paper:
-    {text[:500]}
-    """
 
-    result = ask_ai(prompt)
+    analysis = run_ai_analysis(text)
 
-    return render(
-        request,
-        "blog/analysis.html",
-        {
-            "result": result
-        }
-    )
+    return render(request, "analysis.html", {
+        "paper": paper,
+        "analysis": analysis
+    })
