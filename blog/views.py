@@ -151,8 +151,13 @@ def Resources_list(request):
     return render(request, "blog/Resource.html", {"Resources": Resource})
 @login_required(login_url='login')
 def blog_list(request):
-    blog = Blog.objects.all()
-    return render(request, "blog/blog.html", {"blog": blog})
+
+        blog = Blog.objects.first()
+
+        if blog and blog.image:
+            print(blog.image.url)
+
+        return render(request, "blog/blog.html", {"blog": Blog.objects.all()})
 @login_required(login_url='login')
 def about(request):
     return render(request, "blog/about.html")
