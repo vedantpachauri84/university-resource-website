@@ -1,110 +1,122 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKTU Student Help</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body{
+            overflow-x:hidden;
+        }
+
+        .navbar-brand{
+            font-weight:bold;
+            color:#4f46e5 !important;
+        }
+
+        .btn-register{
+            background:#4f46e5;
+            color:white;
+        }
+
+        .btn-register:hover{
+            background:#4338ca;
+            color:white;
+        }
+    </style>
 </head>
-<nav class="navbar">
-    <div class="logo">
-        <a href="/">AKTU Student Help</a>
+<body>
 
-    </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <div class="container">
 
-    <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="{% url 'Notes' %}">Notes</a></li>
-        <li><a href="{% url 'paper' %}">PYQs</a></li>
-        <li><a href="{% url 'Resource'%}">Resources</a></li>
-        <li><a href="{% url 'blog'%}">Blog</a></li>
+        <a class="navbar-brand" href="/">
+            AKTU Student Help
+        </a>
 
-        <li><a href="{% url 'about' %}">About</a></li>
-        <li><a href="{% url 'contact' %}">Contact</a></li>
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
 
-    </ul>
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="auth-buttons">
-        <a href="{% url 'register' %}" class="register-btn">Register</a>
-        <a href="{% url 'login' %}" class="login-btn">Login</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
 
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-        <a href="{% url 'profile' %}"class="register-btn">Profile</a>
-        <a href="{% url 'logout' %}" class="register-btn">Logout</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Notes' %}">Notes</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'paper' %}">PYQs</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Resource' %}">Resources</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'blog' %}">Blog</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                </li>
+
+            </ul>
+
+            <div class="d-flex flex-column flex-lg-row gap-2">
+
+                <a href="{% url 'register' %}"
+                   class="btn btn-register">
+                    Register
+                </a>
+
+                <a href="{% url 'login' %}"
+                   class="btn btn-outline-primary">
+                    Login
+                </a>
+
+                <a href="{% url 'profile' %}"
+                   class="btn btn-register">
+                    Profile
+                </a>
+
+                <a href="{% url 'login' %}"
+                   class="btn btn-danger">
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
     </div>
 </nav>
-
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-.navbar{
-    position:sticky;
-    top:0;
-    background:white;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px 50px;
-    box-shadow:0 2px 15px rgba(0,0,0,0.08);
-    z-index:1000;
-}
-
-.logo a{
-    text-decoration:none;
-    font-size:24px;
-    font-weight:bold;
-    color:#4f46e5;
-}
-
-.nav-links{
-    display:flex;
-    list-style:none;
-    gap:30px;
-}
-
-.nav-links a{
-    text-decoration:none;
-    color:#222;
-    font-weight:500;
-}
-
-.nav-links a:hover{
-    color:#4f46e5;
-}
-
-.auth-buttons{
-    display:flex;
-    gap:10px;
-}
-
-.login-btn{
-    text-decoration:none;
-    padding:10px 18px;
-    border:1px solid #4f46e5;
-    border-radius:8px;
-    color:#4f46e5;
-}
-
-.register-btn{
-    text-decoration:none;
-    padding:10px 18px;
-    border-radius:8px;
-    background:#4f46e5;
-    color:white;
-}
-
-.register-btn:hover,
-.login-btn:hover{
-    opacity:0.9;
-}
-</style>
-
-
 
 {% block content %}
 {% endblock content %}
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
+```
