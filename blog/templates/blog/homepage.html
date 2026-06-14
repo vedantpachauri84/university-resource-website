@@ -1,10 +1,8 @@
 {% extends "base_or_navbar/navebar.html" %}
 {% block content %}
 
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AKTU Student Help</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -12,16 +10,7 @@
 body{
     font-family: Arial, sans-serif;
     background:#f8fafc;
-}
-
-.navbar{
-    background:white;
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
-}
-
-.navbar-brand{
-    font-weight:bold;
-    color:#4f46e5 !important;
+    overflow-x:hidden;
 }
 
 .hero{
@@ -30,6 +19,7 @@ body{
     align-items:center;
     background:linear-gradient(135deg,#4f46e5,#06b6d4);
     color:white;
+    padding:50px 0;
 }
 
 .hero h1{
@@ -48,6 +38,8 @@ body{
     padding:12px 25px;
     border-radius:10px;
     font-weight:bold;
+    text-decoration:none;
+    display:inline-block;
 }
 
 .feature-card{
@@ -56,19 +48,11 @@ body{
     padding:25px;
     box-shadow:0 5px 15px rgba(0,0,0,0.08);
     transition:.3s;
+    height:100%;
 }
 
 .feature-card:hover{
     transform:translateY(-5px);
-}
-
-.sem-card{
-    background:white;
-    border-radius:15px;
-    padding:20px;
-    text-align:center;
-    box-shadow:0 5px 15px rgba(0,0,0,0.08);
-    cursor:pointer;
 }
 
 .footer{
@@ -76,9 +60,45 @@ body{
     color:white;
     padding:40px 0;
 }
+
+/* Mobile Responsive */
+@media (max-width:768px){
+
+    .hero{
+        text-align:center;
+        min-height:auto;
+        padding:60px 0;
+    }
+
+    .hero h1{
+        font-size:2rem;
+    }
+
+    .hero p{
+        font-size:1rem;
+    }
+
+    .display-4{
+        font-size:2rem !important;
+    }
+
+    .lead{
+        font-size:1rem;
+    }
+
+    .btn-main{
+        width:100%;
+        margin-bottom:20px;
+    }
+
+    .hero img{
+        margin-top:25px;
+    }
+}
 </style>
 
-<div class="text-center py-5">
+<!-- Hero Heading -->
+<div class="container py-5 text-center">
 
     <h1 class="display-4 fw-bold">
         AKTU Notes & Previous Year Papers
@@ -88,88 +108,88 @@ body{
         Free study resources for B.Tech students.
     </p>
 
-
 </div>
 
-
-
+<!-- Main Hero Section -->
 <section class="hero">
-<div class="container">
-<div class="row align-items-center">
+    <div class="container">
 
-<div class="col-lg-6">
-<h1>Your Complete AKTU Study Companion</h1>
+        <div class="row align-items-center">
 
-<p>
-Access Notes, Previous Year Papers,
-Important Questions and AI-powered assistance.
-</p>
+            <div class="col-lg-6">
+                <h1>Your Complete AKTU Study Companion</h1>
 
-<button class="btn-main">
-Explore Resources
-</button>
-</div>
+                <p>
+                    Access Notes, Previous Year Papers,
+                    Important Questions and AI-powered assistance.
+                </p>
 
-<div class="col-lg-6 text-center">
-<img src="https://picsum.photos/500/350"
-class="img-fluid rounded">
-</div>
+                <a href="#" class="btn-main">
+                    Explore Resources
+                </a>
+            </div>
 
-</div>
-</div>
+            <div class="col-lg-6 text-center">
+                <img
+                    src="https://picsum.photos/500/350"
+                    class="img-fluid rounded shadow"
+                    alt="AKTU Student Help">
+            </div>
+
+        </div>
+
+    </div>
 </section>
 
+<!-- Features -->
 <section class="py-5">
-<div class="container">
+    <div class="container">
 
-<h2 class="text-center mb-5">
-Why Students Love AKTU Student Help
-</h2>
+        <h2 class="text-center mb-5">
+            Why Students Love AKTU Student Help
+        </h2>
 
-<div class="row g-4">
+        <div class="row g-4">
 
-<div class="col-md-3">
-<div class="feature-card">
-<h4>📚 Notes</h4>
-<p>Semester-wise study notes.</p>
-</div>
-</div>
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card">
+                    <h4>📚 Notes</h4>
+                    <p>Semester-wise study notes.</p>
+                </div>
+            </div>
 
-<div class="col-md-3">
-<div class="feature-card">
-<h4>📝 PYQs</h4>
-<p>Previous year question papers.</p>
-</div>
-</div>
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card">
+                    <h4>📝 PYQs</h4>
+                    <p>Previous year question papers.</p>
+                </div>
+            </div>
 
-<div class="col-md-3">
-<div class="feature-card">
-<h4>🎯 Important Questions</h4>
-<p>Exam-oriented preparation.</p>
-</div>
-</div>
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card">
+                    <h4>🎯 Important Questions</h4>
+                    <p>Exam-oriented preparation.</p>
+                </div>
+            </div>
 
-<div class="col-md-3">
-<div class="feature-card">
-<h4>🤖 AI Assistant</h4>
-<p>Instant study help.</p>
-</div>
-</div>
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card">
+                    <h4>🤖 AI Assistant</h4>
+                    <p>Instant study help.</p>
+                </div>
+            </div>
 
-</div>
+        </div>
 
-</div>
+    </div>
 </section>
 
-<section class="py-5 bg-light">
-
-</section>
-
+<!-- Footer -->
 <footer class="footer">
-<div class="container text-center">
-<h4>AKTU Student Help</h4>
-<p>Your academic companion throughout B.Tech.</p>
-</div>
+    <div class="container text-center">
+        <h4>AKTU Student Help</h4>
+        <p>Your academic companion throughout B.Tech.</p>
+    </div>
 </footer>
 
 {% endblock content %}
