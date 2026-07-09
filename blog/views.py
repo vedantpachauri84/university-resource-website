@@ -10,9 +10,10 @@ from django.views.decorators.cache import never_cache
 from django.http import JsonResponse
 from .utils import extract_text, ask_ai
 from django.shortcuts import get_object_or_404
-import requests
-import tempfile
-
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import google.generativeai as genai
+import json
 
 
 def home(request):
@@ -182,7 +183,6 @@ def analyze_paper(request, paper_id):
 
     paper = get_object_or_404(Paper, id=paper_id)
 
-    # ✅ Use .url instead of .path (Cloudinary fix)
     file_url = paper.file.url
     response = requests.get(file_url)
 
@@ -191,13 +191,13 @@ def analyze_paper(request, paper_id):
             "result": "Error: Could not download file from Cloudinary."
         })
 
-    # ✅ Download to a temp file
+
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
         tmp.write(response.content)
         tmp_path = tmp.name
 
     try:
-        # ✅ Now extract text from the temp file path
+
         text = extract_text(tmp_path)
         text = re.sub(r'\s+', ' ', text)
 
@@ -225,6 +225,39 @@ Paper:
         result = f"Error during analysis: {str(e)}"
 
     finally:
-        os.remove(tmp_path)  # ✅ Always clean up temp file
+        os.remove(tmp_path)  #
 
     return render(request, "blog/analysis.html", {"result": result})
+from django.conf import settings
+genai.configure(api_key=settings.GEMINI_API_KEY)
+
+model = genai.GenerativeModel("gemini-2.0-flash")
+
+@csrf_exempt
+def chatbot(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        message = data.get("message", "")
+
+        prompt = f"""
+You are AKTU Student Help AI Assistant.
+
+Rules:
+- Help B.Tech students with studies.
+- Explain concepts in simple language.
+- Help with Python, C, DSA, DBMS, Operating Systems, Mathematics, Physics, and Engineering subjects.
+- Answer AKTU-related academic questions when possible.
+- Be concise and student-friendly.
+- If asked non-academic questions, answer normally.
+
+User Question:
+{message}
+"""
+
+        response = model.generate_content(prompt)
+
+        return JsonResponse({
+            "reply": response.text
+        })
+
+    return render(request, "blog/chatbot.html")

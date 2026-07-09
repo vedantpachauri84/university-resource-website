@@ -34,7 +34,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-=k*u)-x42vmo#5^^-tw=cw69yc84p_f+9$y&6=bh&$9xulh48w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG =True
+DEBUG =False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -89,8 +89,9 @@ WSGI_APPLICATION = 'blogs.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    "default": dj_database_url.config()
-
+    "default": dj_database_url.parse(
+        os.environ.get("DATABASE_URL")
+    )
 }
 
 # Password validation

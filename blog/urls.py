@@ -12,6 +12,7 @@ urlpatterns = [
     path('contact/', views.contact_list, name='contact'),
     path("paper/<int:paper_id>/analysis/",views.analyze_paper,name="analyze_paper"),
 
+    path("chatbot/", views.chatbot, name="chatbot"),
 
     path('register', views.register, name='register'),
     path('login', views.login, name='login'),
