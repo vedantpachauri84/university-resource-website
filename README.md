@@ -57,8 +57,14 @@ pip install -r requirements.txt
 Create a `.env` file:
 
 ```env
+DEBUG=true
+DJANGO_SECRET_KEY=use-a-long-random-secret
 GEMINI_API_KEY=your_api_key
 ```
+
+Start from `.env.example`. In production, set `DEBUG=false`, provide a unique
+`DJANGO_SECRET_KEY`, `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, and `DATABASE_URL`.
+Do not commit `.env` or cloud-provider credentials.
 
 ### Run Migrations
 

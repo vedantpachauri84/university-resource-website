@@ -1,6 +1,7 @@
 .env
 db.sqlite3
-profile_pics/
-media/
 __pycache__/
-*.pyc
+*.py[cod]
+.venv/
+media/
+staticfiles/
