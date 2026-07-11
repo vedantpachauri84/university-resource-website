@@ -97,8 +97,17 @@ STORAGES = {
 CLOUDINARY_STORAGE = {"CLOUD_NAME": os.getenv("CLOUDINARY_CLOUD_NAME"), "API_KEY": os.getenv("CLOUDINARY_API_KEY"), "API_SECRET": os.getenv("CLOUDINARY_API_SECRET")}
 cloudinary.config(**CLOUDINARY_STORAGE, secure=True)
 
-EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@aktustudenthelp.example")
+# Gmail uses an App Password (not your usual Google account password).
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "").strip()
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "").strip()
+EMAIL_BACKEND = os.getenv(
+    "EMAIL_BACKEND",
+    "django.core.mail.backends.smtp.EmailBackend" if EMAIL_HOST_USER and EMAIL_HOST_PASSWORD else "django.core.mail.backends.console.EmailBackend",
+)
+EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+EMAIL_USE_TLS = env_flag("EMAIL_USE_TLS", True)
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "noreply@aktustudenthelp.example")
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"

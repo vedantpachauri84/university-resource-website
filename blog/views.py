@@ -9,9 +9,16 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
 from django.core.cache import cache
+from django.core.mail import send_mail
+from django.db import transaction
 from django.http import HttpResponseNotAllowed, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
 from .forms import ContactForm, ProfileImageForm, RegistrationForm
@@ -30,12 +37,46 @@ def register(request):
         return redirect("home")
     form = RegistrationForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
-        user = User.objects.create_user(
-            username=form.cleaned_data["username"], email=form.cleaned_data["email"], password=form.cleaned_data["password1"],
-        )
-        messages.success(request, "Your account is ready. Please sign in.")
-        return redirect("login")
+        if not settings.EMAIL_HOST_USER or not settings.EMAIL_HOST_PASSWORD:
+            form.add_error(None, "Email verification is not configured yet. Please contact the site administrator.")
+        else:
+            with transaction.atomic():
+                user = User.objects.create_user(
+                    username=form.cleaned_data["username"], email=form.cleaned_data["email"], password=form.cleaned_data["password1"], is_active=False,
+                )
+                activation_url = request.build_absolute_uri(
+                    f"/activate/{urlsafe_base64_encode(force_bytes(user.pk))}/{default_token_generator.make_token(user)}/"
+                )
+                try:
+                    send_mail(
+                        "Verify your AKTU Student Help account",
+                        render_to_string("registration/activation_email.txt", {"user": user, "activation_url": activation_url}),
+                        settings.DEFAULT_FROM_EMAIL,
+                        [user.email],
+                        fail_silently=False,
+                    )
+                except Exception:
+                    transaction.set_rollback(True)
+                    form.add_error(None, "We could not send the verification email. Please try again later.")
+                else:
+                    messages.success(request, "Check your Gmail inbox and verify your email before logging in.")
+                    return redirect("login")
     return render(request, "blog/register.html", {"form": form})
+
+
+@require_GET
+def activate_account(request, uidb64, token):
+    try:
+        user = User.objects.get(pk=force_str(urlsafe_base64_decode(uidb64)))
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save(update_fields=["is_active"])
+        messages.success(request, "Your email is verified. You can now log in.")
+    else:
+        messages.error(request, "This verification link is invalid or has expired.")
+    return redirect("login")
 
 
 @require_http_methods(["GET", "POST"])
