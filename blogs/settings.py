@@ -61,8 +61,6 @@ TEMPLATES = [{
 WSGI_APPLICATION = "blogs.wsgi.application"
 ASGI_APPLICATION = "blogs.asgi.application"
 
-# Use Neon/PostgreSQL whenever DATABASE_URL is provided. Django's native
-# SQLite configuration is deliberately used as a Windows-safe local fallback.
 DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
 if DATABASE_URL:
     DATABASES = {"default": dj_database_url.parse(

@@ -7,7 +7,7 @@ import requests
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.core.cache import cache
@@ -24,6 +24,7 @@ from django.views.decorators.http import require_GET, require_http_methods, requ
 from .forms import ContactForm, ProfileImageForm, RegistrationForm
 from .models import Blog, Notes, Paper, Profile, Resources
 from .utils import ask_ai, extract_text
+from django.shortcuts import render
 
 
 @require_GET
