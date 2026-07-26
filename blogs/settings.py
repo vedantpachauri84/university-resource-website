@@ -29,8 +29,7 @@ if not SECRET_KEY:
     else:
         raise ImproperlyConfigured("DJANGO_SECRET_KEY must be set when DEBUG=False.")
 
-ALLOWED_HOSTS = [host.strip() for host in (os.getenv("ALLOWED_HOSTS", "").strip() or "localhost,127.0.0.1").split(",")
-                 if host.strip()]
+ALLOWED_HOSTS = [host.strip() for host in (os.getenv("ALLOWED_HOSTS", "").strip() or "localhost,127.0.0.1").split(",") if host.strip()]
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if origin.strip()]
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
@@ -41,11 +40,13 @@ INSTALLED_APPS = [
     "blog.apps.BlogConfig",
 ]
 
-# NOTE: WhiteNoise middleware removed — it was trying to gzip/manifest-hash
-# Cloudinary-referenced static files that don't physically exist in
-# STATIC_ROOT, causing collectstatic to fail with FileNotFoundError.
+# WhiteNoise middleware is required to actually SERVE static files (like
+# admin CSS/JS) when DEBUG=False. We keep the middleware, but use a plain
+# (non-compressed, non-manifest) storage backend below so collectstatic
+# doesn't choke on Cloudinary-referenced paths.
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -92,14 +93,19 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_AUTOREFRESH = DEBUG
 
-# Single source of truth for static file storage — no WhiteNoise, since
-# Render serves static assets fine on its own and Cloudinary handles media.
+# Single source of truth for static file storage. We use WhiteNoise's plain
+# (non-compressed, non-manifest) storage here — WhiteNoiseMiddleware serves
+# these files in production. The *Compressed/Manifest* variant is avoided
+# because it hashes/rewrites every static reference (including ones injected
+# by cloudinary_storage) and crashes if any referenced file is missing.
 STORAGES = {
     "default": {"BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"},
-    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.WhiteNoiseStaticFilesStorage"},
 }
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.WhiteNoiseStaticFilesStorage"
 
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": os.getenv("CLOUDINARY_CLOUD_NAME", ""),
