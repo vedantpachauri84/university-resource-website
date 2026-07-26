@@ -29,7 +29,8 @@ if not SECRET_KEY:
     else:
         raise ImproperlyConfigured("DJANGO_SECRET_KEY must be set when DEBUG=False.")
 
-ALLOWED_HOSTS = [host.strip() for host in (os.getenv("ALLOWED_HOSTS", "").strip() or "localhost,127.0.0.1").split(",") if host.strip()]
+ALLOWED_HOSTS = [host.strip() for host in (os.getenv("ALLOWED_HOSTS", "").strip() or "localhost,127.0.0.1").split(",")
+                 if host.strip()]
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if origin.strip()]
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
@@ -96,16 +97,16 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_AUTOREFRESH = DEBUG
 
-# Single source of truth for static file storage. We use WhiteNoise's plain
-# (non-compressed, non-manifest) storage here — WhiteNoiseMiddleware serves
-# these files in production. The *Compressed/Manifest* variant is avoided
-# because it hashes/rewrites every static reference (including ones injected
-# by cloudinary_storage) and crashes if any referenced file is missing.
+# Single source of truth for static file storage. Use Django's plain
+# storage to COLLECT files (no hashing/compression, so nothing breaks if a
+# referenced file is missing). WhiteNoiseMiddleware SERVES these files at
+# request time directly from STATIC_ROOT — it doesn't require any special
+# storage backend to do that.
 STORAGES = {
     "default": {"BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"},
-    "staticfiles": {"BACKEND": "whitenoise.storage.WhiteNoiseStaticFilesStorage"},
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
 }
-STATICFILES_STORAGE = "whitenoise.storage.WhiteNoiseStaticFilesStorage"
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": os.getenv("CLOUDINARY_CLOUD_NAME", ""),
