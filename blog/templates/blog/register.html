@@ -1,1 +1,75 @@
-{% extends "base_or_navbar/navebar.html" %}{% block title %}Create account | AKTU Student Help{% endblock %}{% block content %}<div class="container py-5"><div class="row justify-content-center"><div class="col-md-8 col-lg-6"><div class="card p-4 p-md-5"><h1 class="h2 fw-bold">Create your account</h1><p class="text-secondary mb-4">Save time finding the resources that matter.</p><form method="post" novalidate>{% csrf_token %}{% for field in form %}<div class="mb-3"><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label><input class="form-control {% if field.errors %}is-invalid{% endif %}" id="{{ field.id_for_label }}" name="{{ field.html_name }}" type="{% if 'password' in field.html_name %}password{% elif field.html_name == 'email' %}email{% else %}text{% endif %}" value="{% if field.html_name != 'password1' and field.html_name != 'password2' %}{{ field.value|default:'' }}{% endif %}" required>{% for error in field.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}{% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}</div>{% endfor %}<button class="btn btn-brand w-100" type="submit">Create account</button></form><p class="text-center text-secondary small mt-4 mb-0">Already registered? <a href="{% url 'login' %}">Log in</a></p></div></div></div></div>{% endblock %}
+{% extends "base_or_navbar/navebar.html" %}
+
+{% block title %}
+Create account | AKTU Student Help
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+
+            <div class="card p-4 p-md-5">
+
+                <h1 class="h2 fw-bold">Create your account</h1>
+
+                <p class="text-secondary mb-4">
+                    Save time finding the resources that matter.
+                </p>
+
+                <form method="post" novalidate>
+
+                    {% csrf_token %}
+
+                    {% for field in form %}
+
+                        <div class="mb-3">
+
+                            <label class="form-label" for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                            </label>
+
+                            <input
+                                class="form-control {% if field.errors %}is-invalid{% endif %}"
+                                id="{{ field.id_for_label }}"
+                                name="{{ field.html_name }}"
+                                type="{% if 'password' in field.html_name %}password{% elif field.html_name == 'email' %}email{% else %}text{% endif %}"
+                                value="{% if field.html_name != 'password1' and field.html_name != 'password2' %}{{ field.value|default:'' }}{% endif %}"
+                                required
+                            >
+
+                            {% for error in field.errors %}
+                                <div class="invalid-feedback">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+
+                            {% if field.help_text %}
+                                <div class="form-text">
+                                    {{ field.help_text }}
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+
+                    <button class="btn btn-brand w-100" type="submit">
+                        Create account
+                    </button>
+
+                </form>
+
+                <p class="text-center text-secondary small mt-4 mb-0">
+                    Already registered?
+                    <a href="{% url 'login' %}">Log in</a>
+                </p>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
