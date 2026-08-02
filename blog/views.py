@@ -90,6 +90,7 @@ def register(request):
                 print("EMAIL_HOST_USER:", settings.EMAIL_HOST_USER)
                 print("EMAIL_HOST:", settings.EMAIL_HOST)
                 print("DEFAULT_FROM_EMAIL:", settings.DEFAULT_FROM_EMAIL)
+                print(getattr(settings, "EMAIL_USE_SSL", False))
 
                 # Send verification email
                 try:
