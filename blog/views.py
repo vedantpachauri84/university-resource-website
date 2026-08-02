@@ -66,7 +66,7 @@ def register(request):
             send_mail(
                 subject="Verify your email",
                 message=f"Click the link to verify your account:\n\n{activation_link}",
-                from_email=None,
+                from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[user.email],
                 fail_silently=False,
             )
