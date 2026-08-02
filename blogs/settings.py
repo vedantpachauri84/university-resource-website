@@ -131,7 +131,7 @@ DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "noreply
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
-EMAIL_TIMEOUT = 100
+EMAIL_TIMEOUT = 10
 CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache", "LOCATION": "aktu-student-help"}}
 
 # Enable HTTPS-only protections automatically outside local development.
