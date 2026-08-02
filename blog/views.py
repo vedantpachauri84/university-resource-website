@@ -86,6 +86,10 @@ def register(request):
                         kwargs={"uidb64": uid, "token": token},
                     )
                 )
+                print("EMAIL_BACKEND:", settings.EMAIL_BACKEND)
+                print("EMAIL_HOST_USER:", settings.EMAIL_HOST_USER)
+                print("EMAIL_HOST:", settings.EMAIL_HOST)
+                print("DEFAULT_FROM_EMAIL:", settings.DEFAULT_FROM_EMAIL)
 
                 # Send verification email
                 try:
