@@ -21,7 +21,7 @@ def env_flag(name, default=False):
     return os.getenv(name, str(default)).strip().lower() in {"1", "true", "yes", "on"}
 
 
-DEBUG = env_flag("DEBUG", False)
+DEBUG = env_flag("DEBUG", True)
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 if not SECRET_KEY:
     if DEBUG:
