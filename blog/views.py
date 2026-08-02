@@ -4,7 +4,6 @@ import re
 import tempfile
 
 import requests
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required,user_passes_test
@@ -20,7 +19,8 @@ from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
-
+from django.urls import reverse
+from django.conf import settings
 from .forms import ContactForm, ProfileImageForm, RegistrationForm
 from .models import Blog, Notes, Paper, Profile, Resources
 from .utils import ask_ai, extract_text
@@ -41,35 +41,64 @@ def register(request):
 
     if request.method == "POST":
         if form.is_valid():
-            User.objects.create_user(
+
+
+            user = User.objects.create_user(
                 username=form.cleaned_data["username"],
                 email=form.cleaned_data["email"],
                 password=form.cleaned_data["password1"],
-                is_active=True,
+                is_active=False,      # Account is inactive until email verification
             )
 
-            messages.success(request, "Account created successfully. Please log in.")
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+
+            activation_link = request.build_absolute_uri(
+                reverse(
+                    "activate_account",
+                    kwargs={
+                        "uidb64": uid,
+                        "token": token,
+                    },
+                )
+            )
+
+            send_mail(
+                subject="Verify your email",
+                message=f"Click the link to verify your account:\n\n{activation_link}",
+                from_email=None,
+                recipient_list=[user.email],
+                fail_silently=False,
+            )
+
+            messages.success(
+                request,
+                "Account created successfully. Please check your email to verify your account.",
+            )
             return redirect("login")
-        else:
-            print(form.errors)
-            print(form.non_field_errors())
+
+        print(form.errors)
+        print(form.non_field_errors())
 
     return render(request, "blog/register.html", {"form": form})
+
 
 @require_GET
 def activate_account(request, uidb64, token):
     try:
-        user = User.objects.get(pk=force_str(urlsafe_base64_decode(uidb64)))
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
+
     if user and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save(update_fields=["is_active"])
-        messages.success(request, "Your email is verified. You can now log in.")
+        messages.success(request, "Your email has been verified. You can now log in.")
     else:
         messages.error(request, "This verification link is invalid or has expired.")
-    return redirect("login")
 
+    return redirect("login")
 
 @require_http_methods(["GET", "POST"])
 def login_view(request):
