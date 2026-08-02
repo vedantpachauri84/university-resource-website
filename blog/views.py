@@ -43,7 +43,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.urls import reverse
 from django.conf import settings
-from django_ratelimit. decorators import ratelimit
+from django_ratelimit.decorators import ratelimit
 
 # For async email: use Celery, Django-Q, or Django-Tasks
 # from celery import shared_task
