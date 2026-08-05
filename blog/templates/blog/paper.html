@@ -1,1 +1,119 @@
-{% extends "base_or_navbar/navebar.html" %}{% block title %}Previous papers | AKTU Student Help{% endblock %}{% block content %}<div class="container py-5"><div class="d-flex justify-content-between align-items-end mb-4"><div><p class="text-primary fw-semibold mb-1">EXAM PREPARATION</p><h1 class="fw-bold mb-0">Previous year papers</h1></div><span class="text-secondary">{{ papers|length }} result{{ papers|pluralize }}</span></div><div class="card p-3 mb-4"><form method="get" class="row g-3"><div class="col-md-5"><label class="visually-hidden" for="year">Year</label><select class="form-select" id="year" name="year"><option value="">All years</option>{% for year in years %}<option value="{{ year }}" {% if selected_year == year|stringformat:'s' %}selected{% endif %}>{{ year }}</option>{% endfor %}</select></div><div class="col-md-5"><label class="visually-hidden" for="title">Subject</label><select class="form-select" id="title" name="title"><option value="">All subjects</option>{% for title in titles %}<option value="{{ title }}" {% if selected_title == title %}selected{% endif %}>{{ title }}</option>{% endfor %}</select></div><div class="col-md-2"><button class="btn btn-brand w-100">Filter</button></div></form></div><div class="row g-3">{% for paper in papers %}<div class="col-md-6"><article class="card p-4 h-100"><span class="badge text-bg-light align-self-start mb-3">{{ paper.year }}</span><h2 class="h5">{{ paper.title }}</h2><p class="text-secondary flex-grow-1">Previous year examination paper.</p><div class="d-flex gap-2"><a class="btn btn-brand" target="_blank" rel="noopener" href="{{ paper.file.url }}">Open PDF</a><a class="btn btn-outline-primary" href="{% url 'analyze_paper' paper.id %}">AI analysis</a></div></article></div>{% empty %}<p class="text-secondary">No papers match these filters yet.</p>{% endfor %}</div></div>{% endblock %}
+{% extends "base_or_navbar/navebar.html" %}
+
+{% block title %}
+Previous papers | AKTU Student Help
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-end mb-4">
+        <div>
+            <p class="text-primary fw-semibold mb-1">EXAM PREPARATION</p>
+            <h1 class="fw-bold mb-0">Previous year papers</h1>
+        </div>
+
+        <span class="text-secondary">
+            {{ papers|length }} result{{ papers|pluralize }}
+        </span>
+    </div>
+
+    <div class="card p-3 mb-4">
+        <form method="get" class="row g-3">
+
+            <div class="col-md-5">
+                <label class="visually-hidden" for="year">Year</label>
+
+                <select class="form-select" id="year" name="year">
+                    <option value="">All years</option>
+
+                    {% for year in years %}
+                    <option value="{{ year }}"
+                        {% if selected_year == year|stringformat:'s' %}selected{% endif %}>
+                        {{ year }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-5">
+                <label class="visually-hidden" for="title">Subject</label>
+
+                <select class="form-select" id="title" name="title">
+                    <option value="">All subjects</option>
+
+                    {% for title in titles %}
+                    <option value="{{ title }}"
+                        {% if selected_title == title %}selected{% endif %}>
+                        {{ title }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn btn-brand w-100">
+                    Filter
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="row g-3">
+
+        {% for paper in papers %}
+
+        <div class="col-md-6">
+            <article class="card p-4 h-100">
+
+                <span class="badge text-bg-light align-self-start mb-3">
+                    {{ paper.year }}
+                </span>
+
+                <h2 class="h5">
+                    {{ paper.title }}
+                </h2>
+
+                <p class="text-secondary flex-grow-1">
+                    Previous year examination paper.
+                </p>
+
+                <div class="d-flex gap-2">
+                    <a class="btn btn-brand"
+                       target="_blank"
+                       rel="noopener"
+                       href="{{ paper.file.url }}">
+                        Open PDF
+                    </a>
+
+                    <a class="btn btn-outline-primary"
+                       href="{% url 'analyze_paper' paper.id %}">
+                        AI analysis
+                    </a>
+                    <a class="btn btn-outline-primary" href="{{ paper.link}}">
+                    Quiz
+                </a>
+
+
+
+
+                </div>
+
+            </article>
+        </div>
+
+        {% empty %}
+
+        <p class="text-secondary">
+            No papers match these filters yet.
+        </p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

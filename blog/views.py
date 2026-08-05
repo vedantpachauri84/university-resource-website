@@ -53,13 +53,10 @@ User = get_user_model()
 logger = logging.getLogger(__name__)
 
 
-# ============================================
-# OPTION 1: With synchronous email (improved)
-# ============================================
 @ratelimit(key='ip', rate='5/h', method='POST')
 @require_http_methods(["GET", "POST"])
 def register(request):
-    """User registration with email verification."""
+    """User registration."""
     if request.user.is_authenticated:
         return redirect("home")
 
@@ -68,205 +65,36 @@ def register(request):
     if request.method == "POST":
         if form.is_valid():
             try:
-                # Create inactive user
-                user = User.objects.create_user(
+                # Create active user
+                User.objects.create_user(
                     username=form.cleaned_data["username"],
                     email=form.cleaned_data["email"],
                     password=form.cleaned_data["password1"],
-                    is_active=False,
+                    is_active=True,
                 )
 
-                # Generate verification link
-                uid = urlsafe_base64_encode(force_bytes(user.pk))
-                token = default_token_generator.make_token(user)
-
-                activation_link = request.build_absolute_uri(
-                    reverse(
-                        "activate_account",
-                        kwargs={"uidb64": uid, "token": token},
-                    )
+                logger.info(
+                    f"User {form.cleaned_data['username']} registered successfully."
                 )
-                print("EMAIL_BACKEND:", settings.EMAIL_BACKEND)
-                print("EMAIL_HOST_USER:", settings.EMAIL_HOST_USER)
-                print("EMAIL_HOST:", settings.EMAIL_HOST)
-                print("DEFAULT_FROM_EMAIL:", settings.DEFAULT_FROM_EMAIL)
-                print(getattr(settings, "EMAIL_USE_SSL", False))
 
-                # Send verification email
-                try:
-                    send_mail(
-                        subject="Verify your email",
-                        message=f"Click the link to verify your account:\n\n{activation_link}",
-                        from_email=settings.DEFAULT_FROM_EMAIL,
-                        recipient_list=[user.email],
-                        fail_silently=False,
-                    )
-                    logger.info(f"Verification email sent to {user.email}")
-                    messages.success(
-                        request,
-                        "Account created! Please check your email to verify your account.",
-                    )
-                    return redirect("login")
+                messages.success(
+                    request,
+                    "Account created successfully! You can now log in."
+                )
 
-                except Exception as e:
-                    logger.error(f"Failed to send verification email to {user.email}: {e}")
-                    # User is created but not notified - consider adding a resend view
-                    messages.warning(
-                        request,
-                        "Account created, but we couldn't send the verification email. "
-                        "Please contact support or try resending the verification email.",
-                    )
-                    return redirect("login")
+                return redirect("login")
 
             except Exception as e:
                 logger.error(f"Registration failed: {e}")
-                messages.error(request, "An error occurred during registration. Please try again.")
+                messages.error(
+                    request,
+                    "An error occurred during registration. Please try again."
+                )
 
         else:
             logger.warning(f"Registration validation failed: {form.errors}")
-            # Form errors are automatically rendered in the template
 
     return render(request, "blog/register.html", {"form": form})
-
-
-# ============================================
-# OPTION 2: With async email (using Celery)
-# ============================================
-# Uncomment this section if using Celery or similar async task queue
-
-# @shared_task
-# def send_verification_email(user_id, activation_link):
-#     """Async task to send verification email."""
-#     try:
-#         user = User.objects.get(pk=user_id)
-#         send_mail(
-#             subject="Verify your email",
-#             message=f"Click the link to verify your account:\n\n{activation_link}",
-#             from_email=settings.DEFAULT_FROM_EMAIL,
-#             recipient_list=[user.email],
-#             fail_silently=False,
-#         )
-#         logger.info(f"Verification email sent to {user.email}")
-#     except User.DoesNotExist:
-#         logger.error(f"User {user_id} not found for verification email")
-#     except Exception as e:
-#         logger.error(f"Failed to send verification email: {e}")
-#         # Implement retry logic or alert system here
-
-
-# @ratelimit(key='ip', rate='5/h', method='POST')
-# @require_http_methods(["GET", "POST"])
-# def register_async(request):
-#     """User registration with async email verification."""
-#     if request.user.is_authenticated:
-#         return redirect("home")
-#
-#     form = RegistrationForm(request.POST or None)
-#
-#     if request.method == "POST":
-#         if form.is_valid():
-#             try:
-#                 user = User.objects.create_user(
-#                     username=form.cleaned_data["username"],
-#                     email=form.cleaned_data["email"],
-#                     password=form.cleaned_data["password1"],
-#                     is_active=False,
-#                 )
-#
-#                 uid = urlsafe_base64_encode(force_bytes(user.pk))
-#                 token = default_token_generator.make_token(user)
-#                 activation_link = request.build_absolute_uri(
-#                     reverse("activate_account", kwargs={"uidb64": uid, "token": token})
-#                 )
-#
-#                 # Queue async email task
-#                 send_verification_email.delay(user.id, activation_link)
-#
-#                 messages.success(
-#                     request,
-#                     "Account created! Please check your email to verify your account.",
-#                 )
-#                 return redirect("login")
-#
-#             except Exception as e:
-#                 logger.error(f"Registration failed: {e}")
-#                 messages.error(request, "An error occurred. Please try again.")
-#
-#         else:
-#             logger.warning(f"Registration validation failed: {form.errors}")
-#
-#     return render(request, "blog/register.html", {"form": form})
-
-
-@require_GET
-def activate_account(request, uidb64, token):
-    """Activate user account via email verification link."""
-    try:
-        uid = force_str(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-        user = None
-        logger.warning(f"Invalid activation attempt: uidb64={uidb64}")
-
-    if user and default_token_generator.check_token(user, token):
-        user.is_active = True
-        user.save(update_fields=["is_active"])
-        logger.info(f"User {user.username} activated via email verification")
-        messages.success(request, "✓ Your email is verified! You can now log in.")
-    else:
-        logger.warning(f"Failed activation attempt for user: {user}")
-        messages.error(request, "This verification link is invalid or has expired.")
-
-    return redirect("login")
-
-
-# ============================================
-# BONUS: Resend verification email view
-# ============================================
-@ratelimit(key='ip', rate='3/h', method='POST')
-@require_http_methods(["GET", "POST"])
-def resend_verification(request):
-    """Resend verification email if user didn't receive it."""
-    if request.user.is_authenticated:
-        return redirect("home")
-
-    if request.method == "POST":
-        email = request.POST.get("email")
-        try:
-            user = User.objects.get(email=email)
-
-            if user.is_active:
-                messages.info(request, "This account is already verified.")
-                return redirect("login")
-
-            uid = urlsafe_base64_encode(force_bytes(user.pk))
-            token = default_token_generator.make_token(user)
-            activation_link = request.build_absolute_uri(
-                reverse("activate_account", kwargs={"uidb64": uid, "token": token})
-            )
-
-            try:
-                send_mail(
-                    subject="Verify your email",
-                    message=f"Click the link to verify your account:\n\n{activation_link}",
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[user.email],
-                    fail_silently=False,
-                )
-                logger.info(f"Resend verification email to {user.email}")
-                messages.success(request, "Verification email sent! Please check your inbox.")
-                return redirect("login")
-
-            except Exception as e:
-                logger.error(f"Failed to resend verification email to {email}: {e}")
-                messages.error(request, "Failed to send email. Please try again later.")
-
-        except User.DoesNotExist:
-            # Security: Don't reveal if email exists
-            messages.info(request, "If that email is registered, you'll receive a verification link.")
-            logger.warning(f"Resend verification attempted for non-existent email: {email}")
-
-    return render(request, "blog/resend_verification.html")
 
 @require_http_methods(["GET", "POST"])
 def login_view(request):
@@ -369,7 +197,7 @@ def analyze_paper(request, paper_id):
             os.unlink(path)
         if not paper_text:
             raise ValueError("No readable text was found in this PDF.")
-        result = ask_ai("""You are an expert university exam analyst. Analyse this exam paper. Return subject, important topics, frequently asked concepts, difficulty (Easy/Medium/Hard), and five concise study tips. Use Markdown headings and bullets. Keep it under 300 words.\n\nPaper:\n""" + paper_text)
+        result = ask_ai("""You are an expert university exam analyst. Analyse this exam paper. Return subject, important topics, frequently asked concepts, difficulty (Easy/Medium/Hard), and five concise study tips. Use Markdown headings and bullets . give 10 mcq like ask in exam in test format . Keep it under 300 words .\n\nPaper:\n""" + paper_text)
     except (requests.RequestException, ValueError, OSError) as exc:
         result = f"We couldn't analyse this paper: {exc}"
     except Exception:

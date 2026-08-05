@@ -1,3 +1,455 @@
-{% extends "base_or_navbar/navebar.html" %}{% block title %}Study smarter | AKTU Student Help{% endblock %}
-{% block extra_css %}<style>.hero{background:radial-gradient(circle at 80% 20%,#22d3ee 0,transparent 28%),linear-gradient(135deg,#312e81,#4f46e5 55%,#0f766e);color:#fff;border-radius:0 0 2.5rem 2.5rem}.hero h1{font-size:clamp(2.5rem,6vw,4.5rem);letter-spacing:-.055em}.feature{border-radius:1rem;height:100%;transition:transform .2s}.feature:hover{transform:translateY(-5px)}.feature-icon{background:#eef2ff;color:#4f46e5;width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-weight:800}</style>{% endblock %}
-{% block content %}<section class="hero py-5 py-lg-6"><div class="container py-5"><div class="row align-items-center g-5"><div class="col-lg-7"><span class="badge rounded-pill text-bg-light text-primary mb-3">Your academic resource hub</span><h1 class="fw-bold">Everything you need to prepare with confidence.</h1><p class="lead text-white-50 my-4">Find notes, previous-year papers, useful resources, and focused AI study support—all in one student-friendly place.</p><div class="d-flex flex-wrap gap-2"><a href="{% url 'Notes' %}" class="btn btn-light btn-lg px-4">Explore notes</a>{% if request.user.is_authenticated %}<a href="{% url 'chatbot' %}" class="btn btn-outline-light btn-lg px-4">Ask AI study help</a>{% else %}<a href="{% url 'register' %}" class="btn btn-outline-light btn-lg px-4">Get started free</a>{% endif %}</div></div><div class="col-lg-5"><div class="card p-4 p-lg-5 shadow-lg"><p class="text-uppercase small fw-bold text-primary mb-4">Made for AKTU students</p><div class="d-flex gap-3 mb-4"><strong class="display-5 text-primary">01</strong><p class="mb-0">Organised notes and material by subject.</p></div><div class="d-flex gap-3 mb-4"><strong class="display-5 text-primary">02</strong><p class="mb-0">Previous papers to guide your exam practice.</p></div><div class="d-flex gap-3"><strong class="display-5 text-primary">03</strong><p class="mb-0">Clear answers when you get stuck studying.</p></div></div></div></div></div></section><section class="container py-5"><div class="text-center mb-4"><p class="text-primary fw-semibold mb-1">STUDY TOOLS</p><h2 class="fw-bold">Simple tools. Serious progress.</h2></div><div class="row g-4"><div class="col-md-6 col-lg-3"><div class="card feature p-4"><div class="feature-icon mb-3">N</div><h3 class="h5">Notes</h3><p class="text-secondary mb-0">Subject-wise material ready when you need it.</p></div></div><div class="col-md-6 col-lg-3"><div class="card feature p-4"><div class="feature-icon mb-3">P</div><h3 class="h5">PYQs</h3><p class="text-secondary mb-0">Practise with previous examination papers.</p></div></div><div class="col-md-6 col-lg-3"><div class="card feature p-4"><div class="feature-icon mb-3">R</div><h3 class="h5">Resources</h3><p class="text-secondary mb-0">Useful assignments and study material in one place.</p></div></div><div class="col-md-6 col-lg-3"><div class="card feature p-4"><div class="feature-icon mb-3">AI</div><h3 class="h5">Study help</h3><p class="text-secondary mb-0">Ask concise questions and unblock your learning.</p></div></div></div></section>{% endblock %}
+{% extends "base_or_navbar/navebar.html" %}
+
+{% block title %}Study smarter | AKTU Student Help{% endblock %}
+
+{% block extra_css %}
+<style>
+  :root {
+    --primary: #4f46e5;
+    --primary-dark: #667eea;
+    --secondary: #764ba2;
+    --accent: #f093fb;
+    --text-dark: #1f2937;
+    --text-light: #6b7280;
+    --text-muted: #9ca3af;
+    --bg-light: #f8f9fa;
+    --bg-lighter: #f3f4f6;
+    --border-color: #e5e7eb;
+  }
+
+  body {
+    background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-lighter) 100%);
+  }
+
+  .navbar-custom {
+    background: white;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    margin-bottom: 0;
+  }
+
+  .navbar-brand {
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .user-info {
+    text-align: right;
+  }
+
+  .user-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
+  }
+
+  .user-role {
+    font-size: 12px;
+    color: var(--text-light);
+    margin: 0;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    color: white;
+    padding: 80px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -5%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .hero-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-left h1 {
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    margin-top: 0;
+  }
+
+  .hero-left p {
+    font-size: 18px;
+    opacity: 0.95;
+    margin-bottom: 30px;
+    line-height: 1.6;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary-custom {
+    background: white;
+    color: var(--primary);
+    padding: 14px 32px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-primary-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .btn-secondary-custom {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 14px 32px;
+    border: 2px solid white;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-secondary-custom:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .hero-right {
+    display: grid;
+    gap: 20px;
+  }
+
+  .stat-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  .stat-number {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    margin-top: 0;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    opacity: 0.9;
+    margin: 0;
+  }
+
+  .features-section {
+    padding: 80px 24px;
+  }
+
+  .features-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .section-tag {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .section-title {
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin: 0 0 16px 0;
+  }
+
+  .section-subtitle {
+    font-size: 18px;
+    color: var(--text-light);
+    margin: 0;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 28px;
+  }
+
+  .feature-card {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-8px);
+    border-color: #d1d5db;
+    box-shadow: 0 20px 25px rgba(0, 0, 0, 0.08);
+  }
+
+  .feature-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .feature-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  .feature-card:nth-child(1) .feature-icon {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+
+  .feature-card:nth-child(2) .feature-icon {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+  }
+
+  .feature-card:nth-child(3) .feature-icon {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+  }
+
+  .feature-card:nth-child(4) .feature-icon {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    color: white;
+  }
+
+  .feature-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0 0 12px 0;
+  }
+
+  .feature-desc {
+    font-size: 15px;
+    color: var(--text-light);
+    line-height: 1.6;
+    margin: 0 0 16px 0;
+  }
+
+  .feature-arrow {
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap 0.3s ease;
+  }
+
+  .feature-card:hover .feature-arrow {
+    gap: 12px;
+  }
+
+  @media (max-width: 768px) {
+    .hero-wrapper {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .hero-left h1 {
+      font-size: 36px;
+    }
+
+    .section-title {
+      font-size: 32px;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .navbar-custom {
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .navbar-user {
+      width: 100%;
+      justify-content: flex-end;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Custom Navbar with Username -->
+
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-wrapper">
+    <div class="hero-left">
+      <h1>Study smarter, ace faster</h1>
+      <p>Everything you need to crush your exams—notes, previous papers, and an AI tutor ready to help whenever you're stuck.</p>
+      <div class="cta-buttons">
+        <a href="{% url 'Notes' %}" class="btn-primary-custom">Explore notes</a>
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'chatbot' %}" class="btn-secondary-custom">Ask AI help</a>
+        {% else %}
+        <a href="{% url 'register' %}" class="btn-secondary-custom">Get started free</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="stat-card">
+        <div class="stat-number">15K+</div>
+        <p class="stat-label">Students using AKTU Hub</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">500+</div>
+        <p class="stat-label">Complete study notes</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">50+</div>
+        <p class="stat-label">Previous year papers</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+  <div class="features-wrapper">
+    <div class="section-header">
+      <span class="section-tag">Study Tools</span>
+      <h2 class="section-title">Everything organized. One platform.</h2>
+      <p class="section-subtitle">Smart resources designed for AKTU students</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📚</div>
+        <h3 class="feature-title">Notes</h3>
+        <p class="feature-desc">Subject-wise material handpicked by toppers and organized by semester.</p>
+        <span class="feature-arrow"><a href="{% url 'Notes' %}">Explore</a> →</span>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <h3 class="feature-title">PYQs</h3>
+        <p class="feature-desc">5+ years of previous papers with solutions to guide your exam prep.</p>
+        <span class="feature-arrow"><a href="{% url 'paper' %}">Practice →</a></span>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3 class="feature-title">Resources</h3>
+        <p class="feature-desc">Assignments, quiz banks, and supplementary materials all in one place.</p>
+        <span class="feature-arrow"><a href="{% url 'Resource' %}">Browse →</a></span>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3 class="feature-title">AI Study Help</h3>
+        <p class="feature-desc">Ask questions, get instant explanations, and unblock your learning journey.</p>
+        <span class="feature-arrow"><a href="{% url 'chatbot' %}">Ask now →</a></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

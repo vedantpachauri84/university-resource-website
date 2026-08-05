@@ -17,6 +17,7 @@ class Paper(models.Model):
     title = models.CharField(max_length=100)
     year = models.IntegerField()
     file=CloudinaryField('file', resource_type='raw',format='pdf')
+    link = models.URLField(max_length=200, blank=True, null=True)
     def __str__(self):
         return self.title
 class Notes(models.Model):
