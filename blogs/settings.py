@@ -97,11 +97,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_AUTOREFRESH = DEBUG
 
-# Single source of truth for static file storage. Use Django's plain
-# storage to COLLECT files (no hashing/compression, so nothing breaks if a
-# referenced file is missing). WhiteNoiseMiddleware SERVES these files at
-# request time directly from STATIC_ROOT — it doesn't require any special
-# storage backend to do that.
+
 STORAGES = {
     "default": {"BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"},
     "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},

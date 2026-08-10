@@ -1,1 +1,49 @@
-{% extends "base_or_navbar/navebar.html" %}{% block title %}Profile | AKTU Student Help{% endblock %}{% block content %}<div class="container py-5"><div class="row justify-content-center"><div class="col-md-8 col-lg-6"><div class="card overflow-hidden"><div class="bg-primary text-white p-4 text-center">{% if profile.image %}<img src="{{ profile.image.url }}" alt="Profile photo" class="rounded-circle border border-4 border-white mb-2" width="112" height="112" style="object-fit:cover">{% endif %}<h1 class="h3 mb-1">{{ request.user.username }}</h1><p class="mb-0 opacity-75">{{ request.user.email }}</p></div><div class="p-4"><h2 class="h5">Update photo</h2><form method="post" enctype="multipart/form-data">{% csrf_token %}<label class="form-label" for="id_image">JPEG, PNG or WebP (max 5 MB)</label><input class="form-control {% if form.image.errors %}is-invalid{% endif %}" id="id_image" name="image" type="file" accept="image/jpeg,image/png,image/webp" required>{% for error in form.image.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}<button class="btn btn-brand mt-3" type="submit">Save profile photo</button></form></div></div></div></div></div>{% endblock %}
+{% extends "base_or_navbar/navebar.html" %}
+
+{% block title %}Profile | AKTU Student Help{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card overflow-hidden">
+                <div class="p-5 text-center text-white" style="background:linear-gradient(135deg,#4338ca,#6d28d9);">
+                    {% if profile.image %}
+                        <img
+                            src="{{ profile.image.url }}"
+                            alt="Profile photo"
+                            class="rounded-circle border border-4 border-white mb-3"
+                            width="112"
+                            height="112"
+                            style="object-fit:cover"
+                        >
+                    {% endif %}
+                    <h1 class="h3 mb-1">{{ request.user.username }}</h1>
+                    <p class="mb-0 opacity-75">{{ request.user.email }}</p>
+                </div>
+                <div class="p-4 p-md-5">
+                    <p class="text-primary fw-bold small text-uppercase mb-2">Personalize your space</p>
+                    <h2 class="h4 fw-bold">Update your profile photo</h2>
+                    <p class="text-secondary">Your photo appears in the navigation and on your home page.</p>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label class="form-label" for="id_image">JPEG, PNG or WebP (max 5 MB)</label>
+                        <input
+                            class="form-control {% if form.image.errors %}is-invalid{% endif %}"
+                            id="id_image"
+                            name="image"
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp"
+                            required
+                        >
+                        {% for error in form.image.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                        <button class="btn btn-brand mt-3" type="submit">Save profile photo</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -4,452 +4,206 @@
 
 {% block extra_css %}
 <style>
-  :root {
-    --primary: #4f46e5;
-    --primary-dark: #667eea;
-    --secondary: #764ba2;
-    --accent: #f093fb;
-    --text-dark: #1f2937;
-    --text-light: #6b7280;
-    --text-muted: #9ca3af;
-    --bg-light: #f8f9fa;
-    --bg-lighter: #f3f4f6;
-    --border-color: #e5e7eb;
-  }
-
-  body {
-    background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-lighter) 100%);
-  }
-
-  .navbar-custom {
-    background: white;
-    padding: 16px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    margin-bottom: 0;
-  }
-
-  .navbar-brand {
-    font-size: 20px;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .navbar-user {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 600;
-    font-size: 16px;
-  }
-
-  .user-info {
-    text-align: right;
-  }
-
-  .user-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-dark);
-    margin: 0;
-  }
-
-  .user-role {
-    font-size: 12px;
-    color: var(--text-light);
-    margin: 0;
-  }
-
-  .hero {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-    color: white;
-    padding: 80px 24px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -10%;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-
-  .hero::after {
-    content: '';
-    position: absolute;
-    bottom: -30%;
-    left: -5%;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-
-  .hero-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero-left h1 {
-    font-size: 48px;
-    font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 20px;
-    margin-top: 0;
-  }
-
-  .hero-left p {
-    font-size: 18px;
-    opacity: 0.95;
-    margin-bottom: 30px;
-    line-height: 1.6;
-  }
-
-  .cta-buttons {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-
-  .btn-primary-custom {
-    background: white;
-    color: var(--primary);
-    padding: 14px 32px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  .btn-primary-custom:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  }
-
-  .btn-secondary-custom {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    padding: 14px 32px;
-    border: 2px solid white;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  .btn-secondary-custom:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
-  }
-
-  .hero-right {
-    display: grid;
-    gap: 20px;
-  }
-
-  .stat-card {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 16px;
-    padding: 24px;
-  }
-
-  .stat-number {
-    font-size: 32px;
-    font-weight: 800;
-    margin-bottom: 8px;
-    margin-top: 0;
-  }
-
-  .stat-label {
-    font-size: 14px;
-    opacity: 0.9;
-    margin: 0;
-  }
-
-  .features-section {
-    padding: 80px 24px;
-  }
-
-  .features-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .section-header {
-    text-align: center;
-    margin-bottom: 60px;
-  }
-
-  .section-tag {
-    color: var(--primary);
-    font-weight: 700;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-    display: block;
-  }
-
-  .section-title {
-    font-size: 42px;
-    font-weight: 800;
-    color: var(--text-dark);
-    margin: 0 0 16px 0;
-  }
-
-  .section-subtitle {
-    font-size: 18px;
-    color: var(--text-light);
-    margin: 0;
-  }
-
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 28px;
-  }
-
-  .feature-card {
-    background: white;
-    border-radius: 16px;
-    padding: 32px;
-    border: 1px solid var(--border-color);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .feature-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #667eea, #764ba2);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s ease;
-  }
-
-  .feature-card:hover {
-    transform: translateY(-8px);
-    border-color: #d1d5db;
-    box-shadow: 0 20px 25px rgba(0, 0, 0, 0.08);
-  }
-
-  .feature-card:hover::before {
-    transform: scaleX(1);
-  }
-
-  .feature-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 28px;
-    margin-bottom: 16px;
-  }
-
-  .feature-card:nth-child(1) .feature-icon {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-  }
-
-  .feature-card:nth-child(2) .feature-icon {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    color: white;
-  }
-
-  .feature-card:nth-child(3) .feature-icon {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    color: white;
-  }
-
-  .feature-card:nth-child(4) .feature-icon {
-    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-    color: white;
-  }
-
-  .feature-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin: 0 0 12px 0;
-  }
-
-  .feature-desc {
-    font-size: 15px;
-    color: var(--text-light);
-    line-height: 1.6;
-    margin: 0 0 16px 0;
-  }
-
-  .feature-arrow {
-    color: var(--primary);
-    font-weight: 600;
-    font-size: 14px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: gap 0.3s ease;
-  }
-
-  .feature-card:hover .feature-arrow {
-    gap: 12px;
-  }
-
-  @media (max-width: 768px) {
-    .hero-wrapper {
-      grid-template-columns: 1fr;
-      gap: 40px;
+    .home-hero {
+        position: relative;
+        overflow: hidden;
+        padding: 5.5rem 0 6rem;
+        background: #17154a;
+        color: #fff;
+        isolation: isolate;
     }
 
-    .hero-left h1 {
-      font-size: 36px;
+    .home-hero::before,
+    .home-hero::after {
+        position: absolute;
+        z-index: -1;
+        width: 32rem;
+        height: 32rem;
+        border-radius: 50%;
+        content: "";
+        filter: blur(8px);
+        opacity: .85;
+        animation: drift 12s ease-in-out infinite alternate;
     }
 
-    .section-title {
-      font-size: 32px;
+    .home-hero::before {
+        top: -18rem;
+        right: -7rem;
+        background: radial-gradient(circle, #8b5cf6, transparent 66%);
     }
 
-    .features-grid {
-      grid-template-columns: 1fr;
+    .home-hero::after {
+        bottom: -22rem;
+        left: 18%;
+        background: radial-gradient(circle, #06b6d4, transparent 66%);
+        animation-delay: -5s;
     }
 
-    .navbar-custom {
-      flex-direction: column;
-      gap: 12px;
-      align-items: flex-start;
+    @keyframes drift {
+        to { transform: translate(-26px, 30px) scale(1.12); }
     }
 
-    .navbar-user {
-      width: 100%;
-      justify-content: flex-end;
+    .hero-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .45rem .8rem;
+        border: 1px solid rgba(255, 255, 255, .18);
+        border-radius: 99px;
+        background: rgba(255, 255, 255, .09);
+        color: #dbeafe;
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
     }
-  }
+
+    .pulse-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #5eead4;
+        box-shadow: 0 0 0 5px rgba(94, 234, 212, .14);
+    }
+
+    .hero-title {
+        max-width: 720px;
+        margin: 1.2rem 0;
+        font-size: clamp(2.7rem, 6vw, 5rem);
+        font-weight: 800;
+        letter-spacing: -.07em;
+        line-height: 1.02;
+    }
+
+    .hero-title span { color: #a5f3fc; }
+
+    .hero-copy {
+        max-width: 570px;
+        color: #d7dcff;
+        font-size: 1.08rem;
+        line-height: 1.75;
+    }
+
+    .hero-action { border-radius: 12px; padding: .8rem 1.15rem; }
+
+    .btn-hero-primary { background: #fff; color: #312e81; }
+
+    .btn-hero-primary:hover { background: #e0f2fe; color: #312e81; transform: translateY(-2px); }
+
+    .btn-hero-secondary { border: 1px solid rgba(255, 255, 255, .35); background: rgba(255, 255, 255, .1); color: #fff; }
+
+    .btn-hero-secondary:hover { border-color: #fff; background: rgba(255, 255, 255, .2); color: #fff; }
+
+    .hero-dashboard {
+        padding: 1rem;
+        border: 1px solid rgba(255, 255, 255, .18);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, .1);
+        box-shadow: 0 28px 80px rgba(7, 8, 43, .36);
+        backdrop-filter: blur(18px);
+    }
+
+    .profile-mini { width: 36px; height: 36px; border: 2px solid rgba(255, 255, 255, .5); border-radius: 50%; object-fit: cover; }
+
+    .dashboard-panel { margin-top: 1rem; padding: 1.25rem; border-radius: 15px; background: #fff; color: var(--ink); }
+
+    .progress-bar-custom { height: 9px; overflow: hidden; border-radius: 999px; background: #e8eaff; }
+
+    .progress-bar-custom span { display: block; width: 72%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #4f46e5, #22d3ee); animation: progress 1.4s ease-out; }
+
+    @keyframes progress { from { width: 0; } }
+
+    .quick-card { padding: 1rem; border: 1px solid var(--line); border-radius: 14px; background: #fff; transition: transform .2s ease, box-shadow .2s ease; }
+
+    .quick-card:hover { transform: translateY(-4px); box-shadow: 0 14px 28px rgba(24, 33, 58, .12); }
+
+    .section-space { padding: 5rem 0; }
+
+    .eyebrow { color: var(--brand); font-size: .76rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+
+    .section-heading { max-width: 650px; font-weight: 800; letter-spacing: -.05em; }
+
+    .tool-card { display: flex; height: 100%; flex-direction: column; padding: 1.65rem; background: #fff; transition: transform .25s ease, box-shadow .25s ease; }
+
+    .tool-card:hover { transform: translateY(-7px); box-shadow: 0 22px 45px rgba(24, 33, 58, .1); }
+
+    .tool-icon { display: grid; width: 48px; height: 48px; margin-bottom: 1.25rem; place-items: center; border-radius: 14px; background: #eef2ff; color: #4338ca; font-size: 1.35rem; }
+
+    .tool-link { margin-top: auto; font-weight: 800; text-decoration: none; }
+
+    .tool-link:hover { color: #312e81; }
+
+    @media (max-width: 991px) { .home-hero { padding: 4rem 0; } .hero-dashboard { margin-top: 2rem; } }
 </style>
 {% endblock %}
 
 {% block content %}
-
-<!-- Custom Navbar with Username -->
-
-
-<!-- Hero Section -->
-<section class="hero">
-  <div class="hero-wrapper">
-    <div class="hero-left">
-      <h1>Study smarter, ace faster</h1>
-      <p>Everything you need to crush your exams—notes, previous papers, and an AI tutor ready to help whenever you're stuck.</p>
-      <div class="cta-buttons">
-        <a href="{% url 'Notes' %}" class="btn-primary-custom">Explore notes</a>
-        {% if request.user.is_authenticated %}
-        <a href="{% url 'chatbot' %}" class="btn-secondary-custom">Ask AI help</a>
-        {% else %}
-        <a href="{% url 'register' %}" class="btn-secondary-custom">Get started free</a>
-        {% endif %}
-      </div>
+<section class="home-hero">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <span class="hero-kicker"><span class="pulse-dot"></span> Your focused study space</span>
+                {% if request.user.is_authenticated %}
+                    <h1 class="hero-title">Welcome back, <span>{{ request.user.username }}</span>.</h1>
+                {% else %}
+                    <h1 class="hero-title">Study smarter. Build your <span>future.</span></h1>
+                {% endif %}
+                <p class="hero-copy">Everything for your AKTU preparation—well-organized notes, previous papers, practical resources, and an AI guide when you need clarity.</p>
+                <div class="d-flex flex-wrap gap-3 mt-4">
+                    <a href="{% url 'Notes' %}" class="btn hero-action btn-hero-primary">Explore notes <span aria-hidden="true">→</span></a>
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'chatbot' %}" class="btn hero-action btn-hero-secondary">Ask AI Study Help</a>
+                    {% else %}
+                        <a href="{% url 'register' %}" class="btn hero-action btn-hero-secondary">Create free account</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="hero-dashboard">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-2">
+                            {% if request.user.is_authenticated and request.user.profile.image %}
+                                <img class="profile-mini" src="{{ request.user.profile.image.url }}" alt="{{ request.user.username }}'s profile photo">
+                            {% else %}
+                                <span class="user-avatar border-0">{{ request.user.username|default:'S'|first|upper }}</span>
+                            {% endif %}
+                            <div>
+                                <small class="d-block text-white-50">Your study space</small>
+                                <strong>{% if request.user.is_authenticated %}{{ request.user.username }}{% else %}AKTU learner{% endif %}</strong>
+                            </div>
+                        </div>
+                        <span class="badge rounded-pill text-bg-light text-primary">Ready to learn</span>
+                    </div>
+                    <div class="dashboard-panel">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div><small class="text-secondary">Today’s focus</small><h2 class="h5 mb-0 mt-1">Make one good study session count.</h2></div>
+                            <span class="fs-4">✦</span>
+                        </div>
+                        <div class="progress-bar-custom"><span></span></div>
+                        <div class="d-flex justify-content-between mt-2 text-secondary small"><span>Revision progress</span><strong class="text-primary">72%</strong></div>
+                    </div>
+                    <div class="row g-2 mt-1">
+                        <div class="col-6"><a class="quick-card d-block text-decoration-none text-dark" href="{% url 'paper' %}"><small class="text-secondary">Practice with</small><strong class="d-block mt-1">Previous papers →</strong></a></div>
+                        <div class="col-6"><a class="quick-card d-block text-decoration-none text-dark" href="{% url 'Resource' %}"><small class="text-secondary">Find useful</small><strong class="d-block mt-1">Resources →</strong></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="hero-right">
-      <div class="stat-card">
-        <div class="stat-number">15K+</div>
-        <p class="stat-label">Students using AKTU Hub</p>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">500+</div>
-        <p class="stat-label">Complete study notes</p>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">50+</div>
-        <p class="stat-label">Previous year papers</p>
-      </div>
-    </div>
-  </div>
 </section>
 
-<!-- Features Section -->
-<section class="features-section">
-  <div class="features-wrapper">
-    <div class="section-header">
-      <span class="section-tag">Study Tools</span>
-      <h2 class="section-title">Everything organized. One platform.</h2>
-      <p class="section-subtitle">Smart resources designed for AKTU students</p>
+<section class="section-space">
+    <div class="container">
+        <div class="row align-items-end mb-4 mb-md-5">
+            <div class="col-lg-7"><p class="eyebrow mb-2">Everything in one place</p><h2 class="section-heading display-6 mb-0">A calmer way to prepare for every semester.</h2></div>
+            <div class="col-lg-5"><p class="text-secondary mb-0 mt-3 mt-lg-0">Choose a focused tool, stay on track, and get back to what matters: learning with confidence.</p></div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-xl-3"><article class="card tool-card"><span class="tool-icon">▤</span><h3 class="h5 fw-bold">Notes</h3><p class="text-secondary">Subject-wise material, ready whenever revision calls.</p><a class="tool-link" href="{% url 'Notes' %}">Browse notes →</a></article></div>
+            <div class="col-md-6 col-xl-3"><article class="card tool-card"><span class="tool-icon">◫</span><h3 class="h5 fw-bold">Previous papers</h3><p class="text-secondary">Practice with real exam patterns and build confidence.</p><a class="tool-link" href="{% url 'paper' %}">View papers →</a></article></div>
+            <div class="col-md-6 col-xl-3"><article class="card tool-card"><span class="tool-icon">✦</span><h3 class="h5 fw-bold">Resources</h3><p class="text-secondary">Assignments and extra material, neatly gathered.</p><a class="tool-link" href="{% url 'Resource' %}">Explore resources →</a></article></div>
+            <div class="col-md-6 col-xl-3"><article class="card tool-card"><span class="tool-icon">⌁</span><h3 class="h5 fw-bold">AI Study Help</h3><p class="text-secondary">Get a clear explanation when a topic feels stuck.</p><a class="tool-link" href="{% url 'chatbot' %}">Ask a question →</a></article></div>
+        </div>
     </div>
-
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">📚</div>
-        <h3 class="feature-title">Notes</h3>
-        <p class="feature-desc">Subject-wise material handpicked by toppers and organized by semester.</p>
-        <span class="feature-arrow"><a href="{% url 'Notes' %}">Explore</a> →</span>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">📝</div>
-        <h3 class="feature-title">PYQs</h3>
-        <p class="feature-desc">5+ years of previous papers with solutions to guide your exam prep.</p>
-        <span class="feature-arrow"><a href="{% url 'paper' %}">Practice →</a></span>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🎯</div>
-        <h3 class="feature-title">Resources</h3>
-        <p class="feature-desc">Assignments, quiz banks, and supplementary materials all in one place.</p>
-        <span class="feature-arrow"><a href="{% url 'Resource' %}">Browse →</a></span>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🤖</div>
-        <h3 class="feature-title">AI Study Help</h3>
-        <p class="feature-desc">Ask questions, get instant explanations, and unblock your learning journey.</p>
-        <span class="feature-arrow"><a href="{% url 'chatbot' %}">Ask now →</a></span>
-      </div>
-    </div>
-  </div>
 </section>
-
 {% endblock %}

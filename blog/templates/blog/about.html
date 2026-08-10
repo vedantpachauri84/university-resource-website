@@ -1,85 +1,32 @@
 {% extends "base_or_navbar/navebar.html" %}
 
+{% block title %}About | AKTU Student Help{% endblock %}
+
 {% block content %}
-
 <div class="container py-5">
-
-    <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold text-primary">
-            About Us
-        </h1>
-        <p class="lead text-muted">
-            Helping AKTU students access quality study resources for free.
-        </p>
-    </div>
-
-    <div class="card shadow border-0 mb-5">
-        <div class="card-body p-5">
-            <h2 class="mb-3">🎓 Our Mission</h2>
-            <p>
-                This platform is created to help students easily access
-                study notes, previous year question papers, and learning
-                resources in one place.
-            </p>
-
-            <p>
-                We aim to save students time by organizing educational
-                material subject-wise and year-wise for quick access.
-            </p>
+    <div class="row justify-content-center text-center mb-5">
+        <div class="col-lg-8">
+            <p class="page-label mb-2">Built for AKTU students</p>
+            <h1 class="page-heading display-5">Study support that feels simple.</h1>
+            <p class="lead text-secondary">One focused place for the material and tools that help you prepare with more confidence.</p>
         </div>
     </div>
+
+    <section class="card p-4 p-md-5 mb-4" style="background:linear-gradient(135deg,#eef2ff,#fff);">
+        <div class="row align-items-center g-4">
+            <div class="col-md-2 text-center"><span class="display-4">✦</span></div>
+            <div class="col-md-10">
+                <p class="page-label mb-2">Our mission</p>
+                <h2 class="h3 page-heading">Make quality study material easier to reach.</h2>
+                <p class="text-secondary mb-0">AKTU Student Help brings notes, previous-year papers, and useful resources together so you can spend less time searching and more time learning.</p>
+            </div>
+        </div>
+    </section>
 
     <div class="row g-4">
-
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0">
-                <div class="card-body text-center">
-                    <h1>📚</h1>
-                    <h4>Study Notes</h4>
-                    <p>
-                        Subject-wise notes for easy preparation.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0">
-                <div class="card-body text-center">
-                    <h1>📝</h1>
-                    <h4>Previous Papers</h4>
-                    <p>
-                        Access previous year AKTU examination papers.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0">
-                <div class="card-body text-center">
-                    <h1>🚀</h1>
-                    <h4>Easy Access</h4>
-                    <p>
-                        Download resources quickly from any device.
-                    </p>
-                </div>
-            </div>
-        </div>
-
+        <div class="col-md-4"><article class="card p-4 h-100"><span class="fs-2">▤</span><h3 class="h5 fw-bold mt-3">Organized notes</h3><p class="text-secondary mb-0">Subject-wise material for more focused preparation.</p></article></div>
+        <div class="col-md-4"><article class="card p-4 h-100"><span class="fs-2">◫</span><h3 class="h5 fw-bold mt-3">Previous papers</h3><p class="text-secondary mb-0">Real exam papers to understand patterns and practice smarter.</p></article></div>
+        <div class="col-md-4"><article class="card p-4 h-100"><span class="fs-2">↗</span><h3 class="h5 fw-bold mt-3">Easy access</h3><p class="text-secondary mb-0">A clean, mobile-friendly study experience on every device.</p></article></div>
     </div>
-
-    <div class="text-center mt-5">
-        <h2 class="fw-bold">Why Choose Us?</h2>
-
-        <p class="text-muted mt-3">
-            ✔ Free Resources <br>
-            ✔ Student Friendly Design <br>
-            ✔ Organized Notes & Papers <br>
-            ✔ Mobile Responsive Website
-        </p>
-    </div>
-
 </div>
-
 {% endblock %}
