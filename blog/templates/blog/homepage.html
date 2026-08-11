@@ -1,209 +1,2310 @@
+
 {% extends "base_or_navbar/navebar.html" %}
 
-{% block title %}Study smarter | AKTU Student Help{% endblock %}
+{% block title %}E-Learning Platform | AKTU Student Help{% endblock %}
 
 {% block extra_css %}
+
 <style>
-    .home-hero {
-        position: relative;
-        overflow: hidden;
-        padding: 5.5rem 0 6rem;
-        background: #17154a;
-        color: #fff;
-        isolation: isolate;
+
+/* =========================================================
+   MAIN VARIABLES
+========================================================= */
+
+:root {
+    --black: #080808;
+    --dark: #111111;
+    --purple: #8067ff;
+    --purple-light: #a897ff;
+    --green: #d8ff63;
+    --white: #ffffff;
+    --muted: #999999;
+    --light-bg: #f7f7f4;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.dynamic-hero {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    background: var(--black);
+    color: white;
+    isolation: isolate;
+}
+
+
+/* animated grid */
+
+.dynamic-hero::before {
+    position: absolute;
+    content: "";
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 70px 70px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            black,
+            transparent 85%
+        );
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   GLOWING ORBS
+========================================================= */
+
+.glow {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.glow-purple {
+
+    width: 520px;
+    height: 520px;
+
+    right: -220px;
+    top: -170px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(128,103,255,.5),
+            transparent 70%
+        );
+
+    filter: blur(20px);
+
+    animation:
+        glowMove 9s ease-in-out infinite alternate;
+}
+
+.glow-green {
+
+    width: 450px;
+    height: 450px;
+
+    left: -250px;
+    bottom: -200px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(216,255,99,.2),
+            transparent 70%
+        );
+
+    filter: blur(20px);
+
+    animation:
+        glowMove2 12s ease-in-out infinite alternate;
+}
+
+@keyframes glowMove {
+
+    0% {
+        transform: translate(0,0) scale(1);
     }
 
-    .home-hero::before,
-    .home-hero::after {
-        position: absolute;
-        z-index: -1;
-        width: 32rem;
-        height: 32rem;
-        border-radius: 50%;
-        content: "";
-        filter: blur(8px);
-        opacity: .85;
-        animation: drift 12s ease-in-out infinite alternate;
+    100% {
+        transform: translate(-80px,100px) scale(1.2);
     }
 
-    .home-hero::before {
-        top: -18rem;
-        right: -7rem;
-        background: radial-gradient(circle, #8b5cf6, transparent 66%);
+}
+
+@keyframes glowMove2 {
+
+    0% {
+        transform: translate(0,0);
     }
 
-    .home-hero::after {
-        bottom: -22rem;
-        left: 18%;
-        background: radial-gradient(circle, #06b6d4, transparent 66%);
-        animation-delay: -5s;
+    100% {
+        transform: translate(120px,-80px);
     }
 
-    @keyframes drift {
-        to { transform: translate(-26px, 30px) scale(1.12); }
+}
+
+
+/* =========================================================
+   HERO CONTAINER
+========================================================= */
+
+.hero-content {
+
+    position: relative;
+
+    z-index: 5;
+
+    padding-top: 110px;
+    padding-bottom: 100px;
+}
+
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+.hero-label {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 8px 14px;
+
+    border:
+        1px solid rgba(255,255,255,.15);
+
+    border-radius: 100px;
+
+    background:
+        rgba(255,255,255,.05);
+
+    color: #ccc;
+
+    font-size: .72rem;
+
+    font-weight: 700;
+
+    letter-spacing: .13em;
+
+    text-transform: uppercase;
+
+    animation:
+        fadeDown .8s ease both;
+}
+
+.hero-dot {
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--green);
+
+    box-shadow:
+        0 0 0 5px rgba(216,255,99,.08),
+        0 0 20px rgba(216,255,99,.8);
+
+    animation:
+        pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    50% {
+        transform: scale(1.5);
     }
 
-    .hero-kicker {
-        display: inline-flex;
-        align-items: center;
-        gap: .5rem;
-        padding: .45rem .8rem;
-        border: 1px solid rgba(255, 255, 255, .18);
-        border-radius: 99px;
-        background: rgba(255, 255, 255, .09);
-        color: #dbeafe;
-        font-size: .78rem;
-        font-weight: 700;
-        letter-spacing: .08em;
-        text-transform: uppercase;
+}
+
+
+/* =========================================================
+   HERO TITLE
+========================================================= */
+
+.hero-title {
+
+    max-width: 1000px;
+
+    margin-top: 28px;
+
+    font-size:
+        clamp(3.6rem, 8vw, 7.5rem);
+
+    font-weight: 800;
+
+    line-height: .88;
+
+    letter-spacing: -.08em;
+
+    animation:
+        heroIn 1s cubic-bezier(.16,1,.3,1);
+}
+
+@keyframes heroIn {
+
+    from {
+        opacity: 0;
+        transform:
+            translateY(70px);
     }
 
-    .pulse-dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: #5eead4;
-        box-shadow: 0 0 0 5px rgba(94, 234, 212, .14);
+    to {
+        opacity: 1;
+        transform:
+            translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   CHANGING WORD
+========================================================= */
+
+.word-box {
+
+    display: block;
+
+    position: relative;
+
+    height: 1em;
+
+    overflow: hidden;
+
+    color: var(--green);
+}
+
+.word {
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+
+    opacity: 0;
+
+    transform:
+        translateY(120%)
+        rotateX(-80deg);
+
+    animation:
+        wordChange 12s infinite;
+}
+
+.word:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.word:nth-child(2) {
+    animation-delay: 3s;
+}
+
+.word:nth-child(3) {
+    animation-delay: 6s;
+}
+
+.word:nth-child(4) {
+    animation-delay: 9s;
+}
+
+@keyframes wordChange {
+
+    0% {
+        opacity: 0;
+        transform:
+            translateY(120%)
+            rotateX(-80deg);
+    }
+
+    6% {
+        opacity: 1;
+        transform:
+            translateY(0)
+            rotateX(0);
+    }
+
+    20% {
+        opacity: 1;
+        transform:
+            translateY(0)
+            rotateX(0);
+    }
+
+    25% {
+        opacity: 0;
+        transform:
+            translateY(-120%)
+            rotateX(80deg);
+    }
+
+    100% {
+        opacity: 0;
+    }
+
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.hero-description {
+
+    max-width: 590px;
+
+    margin-top: 30px;
+
+    color: #a4a4a4;
+
+    font-size: 1.05rem;
+
+    line-height: 1.8;
+
+    animation:
+        fadeUp 1s .3s ease both;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.hero-buttons {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin-top: 30px;
+
+    animation:
+        fadeUp 1s .5s ease both;
+}
+
+.hero-btn {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 14px 21px;
+
+    border-radius: 9px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        transform .3s ease,
+        background .3s ease;
+}
+
+.hero-btn:hover {
+
+    transform:
+        translateY(-4px);
+}
+
+.hero-btn-primary {
+
+    background: white;
+
+    color: #111;
+}
+
+.hero-btn-primary:hover {
+
+    background:
+        var(--green);
+
+    color: #111;
+}
+
+.hero-btn-secondary {
+
+    border:
+        1px solid rgba(255,255,255,.2);
+
+    background:
+        rgba(255,255,255,.05);
+
+    color: white;
+}
+
+.hero-btn-secondary:hover {
+
+    background:
+        rgba(255,255,255,.13);
+
+    color: white;
+}
+
+
+/* =========================================================
+   FLOATING MOBILE / DESKTOP CARDS
+========================================================= */
+
+.float-card {
+
+    position: absolute;
+
+    z-index: 4;
+
+    padding: 12px 15px;
+
+    border:
+        1px solid rgba(255,255,255,.14);
+
+    border-radius: 12px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    backdrop-filter: blur(15px);
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.3);
+
+    color: white;
+
+    font-size: .78rem;
+
+    font-weight: 700;
+
+    pointer-events: none;
+}
+
+.float-card small {
+
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #888;
+
+    font-size: .62rem;
+
+    font-weight: 500;
+}
+
+.float-card.notes {
+
+    top: 24%;
+
+    right: 7%;
+
+    animation:
+        floating 5s ease-in-out infinite;
+}
+
+.float-card.ai {
+
+    top: 45%;
+
+    left: 5%;
+
+    animation:
+        floating 6s 1s ease-in-out infinite;
+}
+
+.float-card.paper {
+
+    bottom: 17%;
+
+    right: 14%;
+
+    animation:
+        floating 5.5s 2s ease-in-out infinite;
+}
+
+@keyframes floating {
+
+    0%,100% {
+        transform:
+            translateY(0)
+            rotate(0deg);
+    }
+
+    50% {
+        transform:
+            translateY(-18px)
+            rotate(2deg);
+    }
+
+}
+
+
+/* =========================================================
+   PRODUCT PREVIEW
+========================================================= */
+
+.product-preview {
+
+    position: relative;
+
+    margin-top: 90px;
+
+    padding: 10px;
+
+    border:
+        1px solid rgba(255,255,255,.14);
+
+    border-radius: 20px;
+
+    background:
+        rgba(255,255,255,.06);
+
+    box-shadow:
+        0 40px 100px rgba(0,0,0,.55);
+
+    backdrop-filter: blur(20px);
+
+    animation:
+        previewIn 1.2s .3s cubic-bezier(.16,1,.3,1) both,
+        previewFloat 6s 1.5s ease-in-out infinite;
+}
+
+@keyframes previewIn {
+
+    from {
+        opacity: 0;
+        transform:
+            translateY(100px)
+            scale(.94);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateY(0)
+            scale(1);
+    }
+
+}
+
+@keyframes previewFloat {
+
+    50% {
+        transform:
+            translateY(-10px);
+    }
+
+}
+
+.preview-window {
+
+    overflow: hidden;
+
+    border-radius: 13px;
+
+    background: #f6f6f3;
+
+    color: #111;
+}
+
+.preview-bar {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 13px 17px;
+
+    background: white;
+
+    border-bottom:
+        1px solid #e5e5e5;
+}
+
+.dots {
+
+    display: flex;
+
+    gap: 6px;
+}
+
+.dots span {
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #ccc;
+}
+
+.preview-body {
+
+    padding: 25px;
+}
+
+.preview-box {
+
+    padding: 20px;
+
+    border:
+        1px solid #e5e5e5;
+
+    border-radius: 13px;
+
+    background: white;
+
+    transition:
+        transform .3s ease;
+}
+
+.preview-box:hover {
+
+    transform:
+        translateY(-6px);
+}
+
+.progress {
+
+    height: 6px;
+
+    margin-top: 15px;
+
+    overflow: hidden;
+
+    border-radius: 50px;
+
+    background: #eee;
+}
+
+.progress span {
+
+    display: block;
+
+    width: 72%;
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            #8067ff,
+            #a78bfa
+        );
+
+    animation:
+        progressGrow 2s ease;
+}
+
+@keyframes progressGrow {
+
+    from {
+        width: 0;
+    }
+
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.features-section {
+
+    padding: 120px 0;
+
+    background:
+        #f7f7f4;
+}
+
+.section-label {
+
+    color:
+        var(--purple);
+
+    font-size: .72rem;
+
+    font-weight: 800;
+
+    letter-spacing: .14em;
+
+    text-transform: uppercase;
+}
+
+.section-title {
+
+    max-width: 850px;
+
+    margin-top: 15px;
+
+    font-size:
+        clamp(2.7rem, 5vw, 5rem);
+
+    font-weight: 800;
+
+    line-height: .95;
+
+    letter-spacing: -.07em;
+}
+
+.section-description {
+
+    max-width: 600px;
+
+    margin-top: 20px;
+
+    color: #777;
+
+    line-height: 1.8;
+}
+
+.feature {
+
+    height: 100%;
+
+    padding: 30px;
+
+    border:
+        1px solid #e4e4e0;
+
+    border-radius: 18px;
+
+    background: white;
+
+    opacity: 0;
+
+    transform:
+        translateY(70px);
+
+    transition:
+        opacity .7s ease,
+        transform .7s cubic-bezier(.16,1,.3,1),
+        box-shadow .3s ease;
+}
+
+.feature.visible {
+
+    opacity: 1;
+
+    transform:
+        translateY(0);
+}
+
+.feature:hover {
+
+    transform:
+        translateY(-10px);
+
+    box-shadow:
+        0 30px 60px rgba(0,0,0,.09);
+}
+
+.feature-icon {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 50px;
+    height: 50px;
+
+    margin-bottom: 25px;
+
+    border-radius: 13px;
+
+    background:
+        #eeeaff;
+
+    color:
+        var(--purple);
+
+    font-weight: 800;
+}
+
+.feature h3 {
+
+    font-weight: 800;
+
+    letter-spacing: -.03em;
+}
+
+.feature p {
+
+    margin-top: 12px;
+
+    color: #777;
+
+    line-height: 1.7;
+}
+
+.feature a {
+
+    display: inline-block;
+
+    margin-top: 20px;
+
+    color: #111;
+
+    font-weight: 800;
+
+    text-decoration: none;
+}
+
+.feature a:hover {
+
+    color: var(--purple);
+}
+
+
+/* =========================================================
+   AI SECTION
+========================================================= */
+
+.ai-section {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 120px 0;
+
+    background:
+        #090909;
+
+    color: white;
+}
+
+.ai-section::before {
+
+    position: absolute;
+
+    content: "";
+
+    width: 600px;
+    height: 600px;
+
+    right: -220px;
+    top: -250px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(128,103,255,.3),
+            transparent 70%
+        );
+
+    animation:
+        aiMove 8s ease-in-out infinite alternate;
+}
+
+@keyframes aiMove {
+
+    to {
+        transform:
+            translate(-100px,130px)
+            scale(1.2);
+    }
+
+}
+
+.ai-title {
+
+    max-width: 850px;
+
+    font-size:
+        clamp(3rem, 6vw, 6rem);
+
+    font-weight: 800;
+
+    line-height: .92;
+
+    letter-spacing: -.075em;
+}
+
+.ai-title span {
+
+    color:
+        var(--green);
+}
+
+.ai-text {
+
+    max-width: 580px;
+
+    margin-top: 25px;
+
+    color: #999;
+
+    line-height: 1.8;
+}
+
+.ai-chat {
+
+    max-width: 750px;
+
+    margin-top: 50px;
+
+    padding: 25px;
+
+    border:
+        1px solid rgba(255,255,255,.12);
+
+    border-radius: 18px;
+
+    background:
+        rgba(255,255,255,.05);
+
+    backdrop-filter: blur(20px);
+}
+
+.chat-line {
+
+    display: flex;
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+
+    opacity: 0;
+
+    transform:
+        translateX(-30px);
+
+    animation:
+        chatIn .7s forwards;
+}
+
+.chat-line:nth-child(1) {
+    animation-delay: .5s;
+}
+
+.chat-line:nth-child(2) {
+    animation-delay: 1.5s;
+}
+
+@keyframes chatIn {
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateX(0);
+    }
+
+}
+
+.chat-avatar {
+
+    display: flex;
+
+    flex-shrink: 0;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 35px;
+    height: 35px;
+
+    border-radius: 9px;
+
+    background:
+        var(--purple);
+
+    font-size: .7rem;
+
+    font-weight: 800;
+}
+
+.chat-text {
+
+    padding: 12px 15px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255,255,255,.07);
+
+    color: #ccc;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.cta {
+
+    padding: 120px 0;
+
+    background:
+        var(--green);
+}
+
+.cta h2 {
+
+    max-width: 900px;
+
+    margin: auto;
+
+    text-align: center;
+
+    font-size:
+        clamp(3rem, 7vw, 7rem);
+
+    font-weight: 800;
+
+    line-height: .9;
+
+    letter-spacing: -.08em;
+}
+
+.cta p {
+
+    max-width: 580px;
+
+    margin: 25px auto 30px;
+
+    text-align: center;
+
+    color: #444;
+
+    line-height: 1.7;
+}
+
+.cta-button {
+
+    display: inline-block;
+
+    padding: 14px 24px;
+
+    border-radius: 9px;
+
+    background: #111;
+
+    color: white;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        transform .3s ease;
+}
+
+.cta-button:hover {
+
+    transform:
+        translateY(-4px);
+
+    color: white;
+}
+
+
+/* =========================================================
+   MOBILE DYNAMIC DESIGN
+========================================================= */
+
+@media (max-width: 767px) {
+
+    .dynamic-hero {
+
+        min-height:
+            100svh;
+
+    }
+
+    .hero-content {
+
+        padding-top: 65px;
+
+        padding-bottom: 60px;
+    }
+
+    .hero-label {
+
+        font-size: .62rem;
+
     }
 
     .hero-title {
-        max-width: 720px;
-        margin: 1.2rem 0;
-        font-size: clamp(2.7rem, 6vw, 5rem);
-        font-weight: 800;
-        letter-spacing: -.07em;
-        line-height: 1.02;
+
+        margin-top: 22px;
+
+        font-size:
+            clamp(3rem, 15vw, 5rem);
+
+        line-height: .9;
+
     }
 
-    .hero-title span { color: #a5f3fc; }
+    .hero-description {
 
-    .hero-copy {
-        max-width: 570px;
-        color: #d7dcff;
-        font-size: 1.08rem;
-        line-height: 1.75;
+        margin-top: 24px;
+
+        font-size: .94rem;
+
+        line-height: 1.7;
+
     }
 
-    .hero-action { border-radius: 12px; padding: .8rem 1.15rem; }
+    .hero-buttons {
 
-    .btn-hero-primary { background: #fff; color: #312e81; }
+        display: grid;
 
-    .btn-hero-primary:hover { background: #e0f2fe; color: #312e81; transform: translateY(-2px); }
+        grid-template-columns:
+            1fr 1fr;
 
-    .btn-hero-secondary { border: 1px solid rgba(255, 255, 255, .35); background: rgba(255, 255, 255, .1); color: #fff; }
-
-    .btn-hero-secondary:hover { border-color: #fff; background: rgba(255, 255, 255, .2); color: #fff; }
-
-    .hero-dashboard {
-        padding: 1rem;
-        border: 1px solid rgba(255, 255, 255, .18);
-        border-radius: 22px;
-        background: rgba(255, 255, 255, .1);
-        box-shadow: 0 28px 80px rgba(7, 8, 43, .36);
-        backdrop-filter: blur(18px);
+        gap: 8px;
     }
 
-    .profile-mini { width: 36px; height: 36px; border: 2px solid rgba(255, 255, 255, .5); border-radius: 50%; object-fit: cover; }
+    .hero-btn {
 
-    .dashboard-panel { margin-top: 1rem; padding: 1.25rem; border-radius: 15px; background: #fff; color: var(--ink); }
+        width: 100%;
 
-    .progress-bar-custom { height: 9px; overflow: hidden; border-radius: 999px; background: #e8eaff; }
+        padding: 13px 10px;
 
-    .progress-bar-custom span { display: block; width: 72%; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #4f46e5, #22d3ee); animation: progress 1.4s ease-out; }
+        font-size: .82rem;
 
-    @keyframes progress { from { width: 0; } }
+        text-align: center;
+    }
 
-    .quick-card { padding: 1rem; border: 1px solid var(--line); border-radius: 14px; background: #fff; transition: transform .2s ease, box-shadow .2s ease; }
 
-    .quick-card:hover { transform: translateY(-4px); box-shadow: 0 14px 28px rgba(24, 33, 58, .12); }
+    /* -----------------------------------------
+       MOBILE FLOATING CARDS
+    ----------------------------------------- */
 
-    .section-space { padding: 5rem 0; }
+    .float-card {
 
-    .eyebrow { color: var(--brand); font-size: .76rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+        position: absolute;
 
-    .section-heading { max-width: 650px; font-weight: 800; letter-spacing: -.05em; }
+        padding: 9px 11px;
 
-    .tool-card { display: flex; height: 100%; flex-direction: column; padding: 1.65rem; background: #fff; transition: transform .25s ease, box-shadow .25s ease; }
+        border-radius: 10px;
 
-    .tool-card:hover { transform: translateY(-7px); box-shadow: 0 22px 45px rgba(24, 33, 58, .1); }
+        font-size: .67rem;
 
-    .tool-icon { display: grid; width: 48px; height: 48px; margin-bottom: 1.25rem; place-items: center; border-radius: 14px; background: #eef2ff; color: #4338ca; font-size: 1.35rem; }
+        backdrop-filter: blur(12px);
+    }
 
-    .tool-link { margin-top: auto; font-weight: 800; text-decoration: none; }
+    .float-card small {
 
-    .tool-link:hover { color: #312e81; }
+        font-size: .52rem;
+    }
 
-    @media (max-width: 991px) { .home-hero { padding: 4rem 0; } .hero-dashboard { margin-top: 2rem; } }
+    .float-card.notes {
+
+        top: 13%;
+
+        right: 4%;
+
+        animation:
+            mobileFloat1 4s ease-in-out infinite;
+    }
+
+    .float-card.ai {
+
+        top: 37%;
+
+        left: 2%;
+
+        animation:
+            mobileFloat2 4.5s ease-in-out infinite;
+    }
+
+    .float-card.paper {
+
+        top: 51%;
+
+        right: 5%;
+
+        animation:
+            mobileFloat3 5s ease-in-out infinite;
+    }
+
+    @keyframes mobileFloat1 {
+
+        0%,100% {
+            transform:
+                translate(0,0)
+                rotate(4deg);
+        }
+
+        50% {
+            transform:
+                translate(-10px,15px)
+                rotate(-4deg);
+        }
+
+    }
+
+    @keyframes mobileFloat2 {
+
+        0%,100% {
+            transform:
+                translate(0,0)
+                rotate(-4deg);
+        }
+
+        50% {
+            transform:
+                translate(12px,-12px)
+                rotate(3deg);
+        }
+
+    }
+
+    @keyframes mobileFloat3 {
+
+        0%,100% {
+            transform:
+                translate(0,0)
+                rotate(3deg);
+        }
+
+        50% {
+            transform:
+                translate(-12px,-15px)
+                rotate(-3deg);
+        }
+
+    }
+
+
+    /* -----------------------------------------
+       MOBILE PRODUCT PREVIEW
+    ----------------------------------------- */
+
+    .product-preview {
+
+        margin-top: 65px;
+
+        padding: 7px;
+
+        border-radius: 15px;
+    }
+
+    .preview-body {
+
+        padding: 12px;
+
+    }
+
+    .preview-box {
+
+        padding: 15px;
+
+    }
+
+    .preview-box h5 {
+
+        font-size: .9rem;
+
+    }
+
+    .preview-box small {
+
+        font-size: .68rem;
+
+    }
+
+
+    /* -----------------------------------------
+       MOBILE FEATURE SECTION
+    ----------------------------------------- */
+
+    .features-section {
+
+        padding:
+            80px 0;
+    }
+
+    .section-title {
+
+        font-size:
+            3rem;
+
+    }
+
+    .feature {
+
+        padding: 24px;
+
+        border-radius: 16px;
+    }
+
+
+    /* -----------------------------------------
+       MOBILE AI
+    ----------------------------------------- */
+
+    .ai-section {
+
+        padding:
+            80px 0;
+    }
+
+    .ai-title {
+
+        font-size:
+            3.2rem;
+
+    }
+
+    .ai-chat {
+
+        padding:
+            16px;
+
+        border-radius:
+            15px;
+    }
+
+    .chat-text {
+
+        font-size:
+            .78rem;
+    }
+
+
+    /* -----------------------------------------
+       MOBILE CTA
+    ----------------------------------------- */
+
+    .cta {
+
+        padding:
+            80px 0;
+    }
+
+    .cta h2 {
+
+        font-size:
+            3.2rem;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .hero-title {
+
+        font-size:
+            2.75rem;
+    }
+
+    .hero-buttons {
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .float-card {
+
+        transform:
+            scale(.85);
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            .01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        scroll-behavior:
+            auto !important;
+    }
+
+}
+
 </style>
+
 {% endblock %}
+
 
 {% block content %}
-<section class="home-hero">
-    <div class="container">
-        <div class="row align-items-center g-5">
-            <div class="col-lg-7">
-                <span class="hero-kicker"><span class="pulse-dot"></span> Your focused study space</span>
-                {% if request.user.is_authenticated %}
-                    <h1 class="hero-title">Welcome back, <span>{{ request.user.username }}</span>.</h1>
-                {% else %}
-                    <h1 class="hero-title">Study smarter. Build your <span>future.</span></h1>
-                {% endif %}
-                <p class="hero-copy">Everything for your AKTU preparation—well-organized notes, previous papers, practical resources, and an AI guide when you need clarity.</p>
-                <div class="d-flex flex-wrap gap-3 mt-4">
-                    <a href="{% url 'Notes' %}" class="btn hero-action btn-hero-primary">Explore notes <span aria-hidden="true">→</span></a>
-                    {% if request.user.is_authenticated %}
-                        <a href="{% url 'chatbot' %}" class="btn hero-action btn-hero-secondary">Ask AI Study Help</a>
-                    {% else %}
-                        <a href="{% url 'register' %}" class="btn hero-action btn-hero-secondary">Create free account</a>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="col-lg-5">
-                <div class="hero-dashboard">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center gap-2">
-                            {% if request.user.is_authenticated and request.user.profile.image %}
-                                <img class="profile-mini" src="{{ request.user.profile.image.url }}" alt="{{ request.user.username }}'s profile photo">
-                            {% else %}
-                                <span class="user-avatar border-0">{{ request.user.username|default:'S'|first|upper }}</span>
-                            {% endif %}
-                            <div>
-                                <small class="d-block text-white-50">Your study space</small>
-                                <strong>{% if request.user.is_authenticated %}{{ request.user.username }}{% else %}AKTU learner{% endif %}</strong>
-                            </div>
-                        </div>
-                        <span class="badge rounded-pill text-bg-light text-primary">Ready to learn</span>
-                    </div>
-                    <div class="dashboard-panel">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div><small class="text-secondary">Today’s focus</small><h2 class="h5 mb-0 mt-1">Make one good study session count.</h2></div>
-                            <span class="fs-4">✦</span>
-                        </div>
-                        <div class="progress-bar-custom"><span></span></div>
-                        <div class="d-flex justify-content-between mt-2 text-secondary small"><span>Revision progress</span><strong class="text-primary">72%</strong></div>
-                    </div>
-                    <div class="row g-2 mt-1">
-                        <div class="col-6"><a class="quick-card d-block text-decoration-none text-dark" href="{% url 'paper' %}"><small class="text-secondary">Practice with</small><strong class="d-block mt-1">Previous papers →</strong></a></div>
-                        <div class="col-6"><a class="quick-card d-block text-decoration-none text-dark" href="{% url 'Resource' %}"><small class="text-secondary">Find useful</small><strong class="d-block mt-1">Resources →</strong></a></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="dynamic-hero">
+
+    <div class="glow glow-purple"></div>
+
+    <div class="glow glow-green"></div>
+
+
+    <!-- FLOATING CARDS -->
+
+    <div class="float-card notes">
+
+        <small>STUDY</small>
+
+        📚 Notes
+
     </div>
+
+
+    <div class="float-card ai">
+
+        <small>AI ASSISTANT</small>
+
+        ✦ Ask AI
+
+    </div>
+
+
+    <div class="float-card paper">
+
+        <small>EXAM PREP</small>
+
+        ◫ Papers
+
+    </div>
+
+
+    <div class="container hero-content">
+
+
+        <span class="hero-label">
+
+            <span class="hero-dot"></span>
+
+            E-Learning Platform
+
+        </span>
+
+
+        {% if request.user.is_authenticated %}
+
+            <h1 class="hero-title">
+
+                Welcome back,
+
+                <span style="color:white;">
+                    {{ request.user.username }}
+                </span>
+
+                <span class="word-box">
+
+                    <span class="word">
+                        Keep learning.
+                    </span>
+
+                    <span class="word">
+                        Keep growing.
+                    </span>
+
+                    <span class="word">
+                        Keep improving.
+                    </span>
+
+                    <span class="word">
+                        Build your future.
+                    </span>
+
+                </span>
+
+            </h1>
+
+        {% else %}
+
+            <h1 class="hero-title">
+
+                Learn
+
+                <span class="word-box">
+
+                    <span class="word">
+                        smarter.
+                    </span>
+
+                    <span class="word">
+                        faster.
+                    </span>
+
+                    <span class="word">
+                        better.
+                    </span>
+
+                    <span class="word">
+                        together.
+                    </span>
+
+                </span>
+
+            </h1>
+
+        {% endif %}
+
+
+        <p class="hero-description">
+
+            Everything you need for your AKTU preparation —
+            notes, previous papers, academic resources and
+            AI-powered study assistance in one intelligent
+            learning platform.
+
+        </p>
+
+
+        <div class="hero-buttons">
+
+            <a
+                href="{% url 'Notes' %}"
+                class="hero-btn hero-btn-primary">
+
+                Explore Notes →
+
+            </a>
+
+
+            {% if request.user.is_authenticated %}
+
+                <a
+                    href="{% url 'chatbot' %}"
+                    class="hero-btn hero-btn-secondary">
+
+                    Ask AI
+
+                </a>
+
+            {% else %}
+
+                <a
+                    href="{% url 'register' %}"
+                    class="hero-btn hero-btn-secondary">
+
+                    Join Free
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- =================================================
+             PRODUCT PREVIEW
+        ================================================= -->
+
+        <div class="product-preview">
+
+            <div class="preview-window">
+
+
+                <div class="preview-bar">
+
+                    <div class="dots">
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </div>
+
+
+                    <small>
+
+                        {% if request.user.is_authenticated %}
+                            {{ request.user.username }}
+                        {% else %}
+                            AKTU Student
+                        {% endif %}
+
+                    </small>
+
+                </div>
+
+
+                <div class="preview-body">
+
+                    <div class="row g-3">
+
+
+                        <div class="col-md-4">
+
+                            <div class="preview-box">
+
+                                <small class="text-secondary">
+                                    Study Material
+                                </small>
+
+                                <h5 class="mt-2 fw-bold">
+                                    Notes
+                                </h5>
+
+                                <div class="progress">
+
+                                    <span></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-4">
+
+                            <div class="preview-box">
+
+                                <small class="text-secondary">
+                                    Exam Preparation
+                                </small>
+
+                                <h5 class="mt-2 fw-bold">
+                                    Previous Papers
+                                </h5>
+
+                                <div class="progress">
+
+                                    <span style="width:58%;"></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-4">
+
+                            <div class="preview-box">
+
+                                <small class="text-secondary">
+                                    AI Assistance
+                                </small>
+
+                                <h5 class="mt-2 fw-bold">
+                                    Study AI
+                                </h5>
+
+                                <div class="progress">
+
+                                    <span style="width:86%;"></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </section>
 
-<section class="section-space">
+
+<!-- =====================================================
+     FEATURES
+===================================================== -->
+
+<section class="features-section">
+
     <div class="container">
-        <div class="row align-items-end mb-4 mb-md-5">
-            <div class="col-lg-7"><p class="eyebrow mb-2">Everything in one place</p><h2 class="section-heading display-6 mb-0">A calmer way to prepare for every semester.</h2></div>
-            <div class="col-lg-5"><p class="text-secondary mb-0 mt-3 mt-lg-0">Choose a focused tool, stay on track, and get back to what matters: learning with confidence.</p></div>
+
+
+        <div class="section-label">
+            Everything in one place
         </div>
-        <div class="row g-4">
-            <div class="col-md-6 col-xl-3"><article class="card tool-card"><span class="tool-icon">▤</span><h3 class="h5 fw-bold">Notes</h3><p class="text-secondary">Subject-wise material, ready whenever revision calls.</p><a class="tool-link" href="{% url 'Notes' %}">Browse notes →</a></article></div>
-            <div class="col-md-6 col-xl-3"><article class="card tool-card"><span class="tool-icon">◫</span><h3 class="h5 fw-bold">Previous papers</h3><p class="text-secondary">Practice with real exam patterns and build confidence.</p><a class="tool-link" href="{% url 'paper' %}">View papers →</a></article></div>
-            <div class="col-md-6 col-xl-3"><article class="card tool-card"><span class="tool-icon">✦</span><h3 class="h5 fw-bold">Resources</h3><p class="text-secondary">Assignments and extra material, neatly gathered.</p><a class="tool-link" href="{% url 'Resource' %}">Explore resources →</a></article></div>
-            <div class="col-md-6 col-xl-3"><article class="card tool-card"><span class="tool-icon">⌁</span><h3 class="h5 fw-bold">AI Study Help</h3><p class="text-secondary">Get a clear explanation when a topic feels stuck.</p><a class="tool-link" href="{% url 'chatbot' %}">Ask a question →</a></article></div>
+
+
+        <h2 class="section-title">
+
+            One platform.
+            Everything you need.
+
+        </h2>
+
+
+        <p class="section-description">
+
+            Spend less time searching for study material
+            and more time actually learning.
+
+        </p>
+
+
+        <div class="row g-4 mt-4">
+
+
+            <!-- NOTES -->
+
+            <div class="col-md-6 col-xl-3">
+
+                <article class="feature reveal">
+
+                    <div class="feature-icon">
+                        N
+                    </div>
+
+                    <h3>
+                        Notes
+                    </h3>
+
+                    <p>
+                        Subject-wise notes for faster
+                        revision and preparation.
+                    </p>
+
+                    <a href="{% url 'Notes' %}">
+                        Browse Notes →
+                    </a>
+
+                </article>
+
+            </div>
+
+
+            <!-- PAPERS -->
+
+            <div class="col-md-6 col-xl-3">
+
+                <article class="feature reveal">
+
+                    <div class="feature-icon">
+                        P
+                    </div>
+
+                    <h3>
+                        Previous Papers
+                    </h3>
+
+                    <p>
+                        Practice real examination papers
+                        and understand exam patterns.
+                    </p>
+
+                    <a href="{% url 'paper' %}">
+                        View Papers →
+                    </a>
+
+                </article>
+
+            </div>
+
+
+            <!-- RESOURCES -->
+
+            <div class="col-md-6 col-xl-3">
+
+                <article class="feature reveal">
+
+                    <div class="feature-icon">
+                        R
+                    </div>
+
+                    <h3>
+                        Resources
+                    </h3>
+
+                    <p>
+                        Assignments, practical material
+                        and useful academic resources.
+                    </p>
+
+                    <a href="{% url 'Resource' %}">
+                        Explore Resources →
+                    </a>
+
+                </article>
+
+            </div>
+
+
+            <!-- AI -->
+
+            <div class="col-md-6 col-xl-3">
+
+                <article class="feature reveal">
+
+                    <div class="feature-icon">
+                        AI
+                    </div>
+
+                    <h3>
+                        AI Study Help
+                    </h3>
+
+                    <p>
+                        Get explanations when a topic
+                        becomes difficult.
+                    </p>
+
+                    <a href="{% url 'chatbot' %}">
+                        Ask AI →
+                    </a>
+
+                </article>
+
+            </div>
+
+
         </div>
+
     </div>
+
 </section>
+
+
+<!-- =====================================================
+     AI SECTION
+===================================================== -->
+
+<section class="ai-section">
+
+    <div class="container">
+
+
+        <div class="section-label">
+            AI-powered learning
+        </div>
+
+
+        <h2 class="ai-title">
+
+            Get stuck.
+
+            <span>Ask AI.</span>
+
+            <br>
+
+            Keep moving.
+
+        </h2>
+
+
+        <p class="ai-text">
+
+            Don't spend an hour searching for an explanation.
+            Ask your AI study assistant and understand the
+            concept quickly.
+
+        </p>
+
+
+        <div class="ai-chat">
+
+
+            <div class="chat-line">
+
+                <div class="chat-avatar">
+                    YOU
+                </div>
+
+                <div class="chat-text">
+
+                    Explain binary search in simple terms.
+
+                </div>
+
+            </div>
+
+
+            <div class="chat-line">
+
+                <div class="chat-avatar">
+                    AI
+                </div>
+
+                <div class="chat-text">
+
+                    Binary search repeatedly divides a
+                    sorted list into two halves and checks
+                    which half can contain the answer.
+
+                </div>
+
+            </div>
+
+
+            {% if request.user.is_authenticated %}
+
+                <a
+                    href="{% url 'chatbot' %}"
+                    class="hero-btn hero-btn-primary">
+
+                    Open AI Study Help →
+
+                </a>
+
+            {% else %}
+
+                <a
+                    href="{% url 'register' %}"
+                    class="hero-btn hero-btn-primary">
+
+                    Start Learning →
+
+                </a>
+
+            {% endif %}
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     CTA
+===================================================== -->
+
+<section class="cta">
+
+    <div class="container">
+
+
+        {% if request.user.is_authenticated %}
+
+            <h2>
+
+                Ready for your
+                next study session?
+
+            </h2>
+
+            <p>
+
+                Pick a resource, practice a paper
+                or ask AI and keep learning.
+
+            </p>
+
+            <div class="text-center">
+
+                <a
+                    href="{% url 'Notes' %}"
+                    class="cta-button">
+
+                    Start Learning →
+
+                </a>
+
+            </div>
+
+
+        {% else %}
+
+            <h2>
+
+                Your learning
+                starts here.
+
+            </h2>
+
+            <p>
+
+                Notes, papers, resources and AI
+                study help in one place.
+
+            </p>
+
+            <div class="text-center">
+
+                <a
+                    href="{% url 'register' %}"
+                    class="cta-button">
+
+                    Create Free Account →
+
+                </a>
+
+            </div>
+
+        {% endif %}
+
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    /* ==============================================
+       SCROLL REVEAL
+    ============================================== */
+
+    const cards =
+        document.querySelectorAll(".reveal");
+
+
+    const observer =
+        new IntersectionObserver(
+
+            function(entries) {
+
+                entries.forEach(function(entry) {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.classList.add(
+                            "visible"
+                        );
+
+                        observer.unobserve(
+                            entry.target
+                        );
+
+                    }
+
+                });
+
+            },
+
+            {
+                threshold: 0.15
+            }
+
+        );
+
+
+    cards.forEach(function(card, index) {
+
+        card.style.transitionDelay =
+            (index * 120) + "ms";
+
+        observer.observe(card);
+
+    });
+
+
+    /* ==============================================
+       MOUSE PARALLAX
+       DESKTOP ONLY
+    ============================================== */
+
+    const hero =
+        document.querySelector(".dynamic-hero");
+
+    const purple =
+        document.querySelector(".glow-purple");
+
+    const green =
+        document.querySelector(".glow-green");
+
+
+    if (hero && window.innerWidth > 768) {
+
+        hero.addEventListener(
+            "mousemove",
+            function(event) {
+
+                const x =
+                    (event.clientX /
+                    window.innerWidth) - .5;
+
+                const y =
+                    (event.clientY /
+                    window.innerHeight) - .5;
+
+
+                if (purple) {
+
+                    purple.style.transform =
+                        `translate(
+                            ${x * -40}px,
+                            ${y * -40}px
+                        )`;
+
+                }
+
+
+                if (green) {
+
+                    green.style.transform =
+                        `translate(
+                            ${x * 30}px,
+                            ${y * 30}px
+                        )`;
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* ==============================================
+       MOBILE TILT EFFECT
+    ============================================== */
+
+    const preview =
+        document.querySelector(".product-preview");
+
+
+    if (
+        preview &&
+        window.innerWidth <= 768
+    ) {
+
+        let lastScroll = 0;
+
+
+        window.addEventListener(
+            "scroll",
+            function() {
+
+                const current =
+                    window.scrollY;
+
+
+                const difference =
+                    current - lastScroll;
+
+
+                if (
+                    Math.abs(difference) > 3
+                ) {
+
+                    preview.style.transform =
+                        `translateY(
+                            ${Math.sin(current / 80) * 5}px
+                        )`;
+
+                }
+
+
+                lastScroll = current;
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    }
+
+
+    /* ==============================================
+       TOUCH PARALLAX FOR MOBILE
+    ============================================== */
+
+    if (
+        hero &&
+        window.innerWidth <= 768
+    ) {
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+
+        hero.addEventListener(
+            "touchstart",
+            function(event) {
+
+                touchStartX =
+                    event.touches[0].clientX;
+
+                touchStartY =
+                    event.touches[0].clientY;
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        hero.addEventListener(
+            "touchmove",
+            function(event) {
+
+                const x =
+                    event.touches[0].clientX;
+
+                const y =
+                    event.touches[0].clientY;
+
+
+                const moveX =
+                    (x - touchStartX) * .15;
+
+                const moveY =
+                    (y - touchStartY) * .15;
+
+
+                if (purple) {
+
+                    purple.style.transform =
+                        `translate(
+                            ${moveX}px,
+                            ${moveY}px
+                        )`;
+
+                }
+
+            },
+            {
+                passive: true
+            }
+        );
+
+    }
+
+
+});
+
+</script>
+
 {% endblock %}
+
