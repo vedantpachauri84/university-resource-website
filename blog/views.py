@@ -2,6 +2,7 @@ import json
 import os
 import re
 import tempfile
+from django.core.paginator import Paginator
 
 import requests
 from django.contrib import messages
@@ -25,7 +26,12 @@ from .forms import ContactForm, ProfileImageForm, RegistrationForm
 from .models import Blog, Notes, Paper, Profile, Resources
 from .utils import ask_ai, extract_text
 from django.shortcuts import render
+# from rest_framework.decorators import api_view
+# from rest_framework.response import Response
+# from rest_framework import status
 
+from .models import Notes
+# from .serializers import personmodelserializwers
 
 @require_GET
 def home(request):
@@ -35,22 +41,30 @@ def home(request):
 import logging
 from django.views.decorators.http import require_http_methods, require_GET
 from django.shortcuts import render, redirect
-from django.contrib.auth import get_user_model
-from django.contrib import messages
-from django.utils.encoding import force_bytes, force_str
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.contrib.auth.tokens import default_token_generator
-from django.core.mail import send_mail
+# from django.contrib.auth import get_user_model
+# from django.contrib import messages
+# from django.utils.encoding import force_bytes, force_str
+# from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+# from django.contrib.auth.tokens import default_token_generator
+# from django.core.mail import send_mail
 from django.urls import reverse
 from django.conf import settings
 from django_ratelimit.decorators import ratelimit
 
-# For async email: use Celery, Django-Q, or Django-Tasks
-# from celery import shared_task
-# from django_tasks import task
 
-User = get_user_model()
-logger = logging.getLogger(__name__)
+
+# def students(request):
+#     response = requests.get(
+#         "http://127.0.0.1:8000/2"
+#     )
+#
+#     data = response.json()
+#     print("STATUS:", response.status_code)
+#     print("CONTENT:", response.text)
+#
+#     return render(request, "blog/students.html", {
+#         "students": data
+#     })
 
 
 @ratelimit(key='ip', rate='5/h', method='POST')
@@ -138,7 +152,9 @@ def paper(request):
         papers = papers.filter(year=int(year))
     if title:
         papers = papers.filter(title=title)
-    return render(request, "blog/paper.html", {"papers": papers, "years": Paper.objects.values_list("year", flat=True).distinct().order_by("-year"), "titles": Paper.objects.values_list("title", flat=True).distinct().order_by("title"), "selected_year": year, "selected_title": title})
+    paginator = Paginator(papers, 1)
+    page=paginator.get_page(1)
+    return render(request, "blog/paper.html", {"papers": page, "years": Paper.objects.values_list("year", flat=True).distinct().order_by("-year"), "titles": Paper.objects.values_list("title", flat=True).distinct().order_by("title"), "selected_year": year, "selected_title": title})
 
 
 @login_required
@@ -148,7 +164,10 @@ def notes_list(request):
     subject = request.GET.get("subject", "")
     if subject:
         notes = notes.filter(Subject=subject)
-    return render(request, "blog/Notes.html", {"Notes": notes, "subjects": Notes.objects.values_list("Subject", flat=True).distinct().order_by("Subject"), "selected_subject": subject})
+    paginator = Paginator(notes, 3)
+    # page_number = request.GET.get("page")
+    page = paginator.get_page(1)
+    return render(request, "blog/Notes.html", {"Notes": page, "subjects": Notes.objects.values_list("Subject", flat=True).distinct().order_by("Subject"), "selected_subject": subject})
 
 
 @login_required

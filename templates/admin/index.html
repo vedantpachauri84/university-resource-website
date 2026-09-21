@@ -1,0 +1,157 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block content %}
+
+<div class="custom-dashboard">
+
+    <div class="dashboard-header">
+
+        <div>
+            <span class="dashboard-eyebrow">
+               Developer dashboard
+            </span>
+
+            <h1>
+                Manage your platform.
+            </h1>
+
+            <p>
+                Upload and manage study resources for AKTU students.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="admin-actions">
+
+
+        <!-- NOTES -->
+
+        <div class="admin-action-card">
+
+            <div class="admin-action-icon notes-icon">
+                📚
+            </div>
+
+            <h2>
+                Study Notes
+            </h2>
+
+            <p>
+                Upload and manage study notes for students.
+            </p>
+
+            <a
+                href="{% url 'admin:blog_notes_add' %}"
+                class="admin-action-button"
+            >
+                + Add Notes
+            </a>
+
+        </div>
+
+
+        <!-- PAPERS -->
+
+        <div class="admin-action-card">
+
+            <div class="admin-action-icon paper-icon">
+                📄
+            </div>
+
+            <h2>
+                Previous Papers
+            </h2>
+
+            <p>
+                Upload previous year examination papers.
+            </p>
+
+            <a
+                href="{% url 'admin:blog_paper_add' %}"
+                class="admin-action-button"
+            >
+                + Add Paper
+            </a>
+
+        </div>
+
+
+        <!-- RESOURCES -->
+
+        <div class="admin-action-card">
+
+            <div class="admin-action-icon resources-icon">
+                📦
+            </div>
+
+            <h2>
+                Resources
+            </h2>
+
+            <p>
+                Add useful study resources for students.
+            </p>
+
+            <a
+                href="{% url 'admin:blog_resources_add' %}"
+                class="admin-action-button"
+            >
+                + Add Resource
+            </a>
+
+        </div>
+
+
+        <!-- BLOG -->
+
+        <div class="admin-action-card">
+
+            <div class="admin-action-icon blog-icon">
+                ✍
+            </div>
+
+            <h2>
+                Blog
+            </h2>
+
+            <p>
+                Create and manage educational blog posts.
+            </p>
+
+            <a
+                href="{% url 'admin:blog_blog_add' %}"
+                class="admin-action-button"
+            >
+                + Add Blog
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="admin-divider"></div>
+
+
+    <div class="admin-section-title">
+
+        <span>
+            CONTENT MANAGEMENT
+        </span>
+
+        <h2>
+            All sections
+        </h2>
+
+    </div>
+
+
+    {{ block.super }}
+
+</div>
+
+{% endblock %}

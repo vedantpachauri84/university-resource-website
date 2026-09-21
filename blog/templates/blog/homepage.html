@@ -1,2310 +1,1508 @@
-
 {% extends "base_or_navbar/navebar.html" %}
+{% load static %}
 
-{% block title %}E-Learning Platform | AKTU Student Help{% endblock %}
+{% block title %}Study smarter | AKTU Student Help{% endblock %}
 
 {% block extra_css %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+/* ==============================
+   HOMEPAGE
+================================ */
 
-/* =========================================================
-   MAIN VARIABLES
-========================================================= */
-
-:root {
-    --black: #080808;
-    --dark: #111111;
-    --purple: #8067ff;
-    --purple-light: #a897ff;
-    --green: #d8ff63;
-    --white: #ffffff;
-    --muted: #999999;
-    --light-bg: #f7f7f4;
+.hp {
+  --hp-bg: #060918;
+  --hp-surface: #0d1117;
+  --hp-surface-2: #161b22;
+  --hp-border: rgba(255,255,255,.06);
+  --hp-border-h: rgba(255,255,255,.12);
+  --hp-text: #f0ede6;
+  --hp-text-2: #8b8fa3;
+  --hp-text-3: #5a5e72;
+  --hp-indigo: #6366f1;
+  --hp-teal: #14b8a6;
+  --hp-amber: #f59e0b;
+  --hp-rose: #f43f5e;
+  --hp-r: 12px;
+  --hp-ease: cubic-bezier(.4,0,.2,1);
 }
 
+/* HERO */
 
-/* =========================================================
-   HERO
-========================================================= */
-
-.dynamic-hero {
-    position: relative;
-    min-height: 100vh;
-    overflow: hidden;
-    background: var(--black);
-    color: white;
-    isolation: isolate;
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 24px 80px;
+  overflow: hidden;
+  background: var(--hp-bg);
+  color: var(--hp-text);
 }
 
-
-/* animated grid */
-
-.dynamic-hero::before {
-    position: absolute;
-    content: "";
-    inset: 0;
-
-    background-image:
-        linear-gradient(
-            rgba(255,255,255,.035) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,.035) 1px,
-            transparent 1px
-        );
-
-    background-size: 70px 70px;
-
-    mask-image:
-        linear-gradient(
-            to bottom,
-            black,
-            transparent 85%
-        );
-
-    pointer-events: none;
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
 }
 
-
-/* =========================================================
-   GLOWING ORBS
-========================================================= */
-
-.glow {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: -1;
+.hero-blob {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: .35;
+  transition: transform .8s var(--hp-ease), opacity .4s ease;
+  will-change: transform;
 }
 
-.glow-purple {
-
-    width: 520px;
-    height: 520px;
-
-    right: -220px;
-    top: -170px;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(128,103,255,.5),
-            transparent 70%
-        );
-
-    filter: blur(20px);
-
-    animation:
-        glowMove 9s ease-in-out infinite alternate;
+.hero-blob--indigo {
+  background: radial-gradient(circle, var(--hp-indigo) 0%, transparent 70%);
+  top: 10%;
+  left: 15%;
 }
 
-.glow-green {
-
-    width: 450px;
-    height: 450px;
-
-    left: -250px;
-    bottom: -200px;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(216,255,99,.2),
-            transparent 70%
-        );
-
-    filter: blur(20px);
-
-    animation:
-        glowMove2 12s ease-in-out infinite alternate;
+.hero-blob--teal {
+  background: radial-gradient(circle, var(--hp-teal) 0%, transparent 70%);
+  top: 40%;
+  right: 10%;
+  width: 400px;
+  height: 400px;
+  opacity: .2;
 }
 
-@keyframes glowMove {
-
-    0% {
-        transform: translate(0,0) scale(1);
-    }
-
-    100% {
-        transform: translate(-80px,100px) scale(1.2);
-    }
-
+.hero-blob--rose {
+  background: radial-gradient(circle, var(--hp-rose) 0%, transparent 70%);
+  bottom: 5%;
+  left: 30%;
+  width: 350px;
+  height: 350px;
+  opacity: .15;
 }
 
-@keyframes glowMove2 {
-
-    0% {
-        transform: translate(0,0);
-    }
-
-    100% {
-        transform: translate(120px,-80px);
-    }
-
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
 }
-
-
-/* =========================================================
-   HERO CONTAINER
-========================================================= */
 
 .hero-content {
-
-    position: relative;
-
-    z-index: 5;
-
-    padding-top: 110px;
-    padding-bottom: 100px;
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-
-/* =========================================================
-   LABEL
-========================================================= */
-
-.hero-label {
-
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 9px;
-
-    padding: 8px 14px;
-
-    border:
-        1px solid rgba(255,255,255,.15);
-
-    border-radius: 100px;
-
-    background:
-        rgba(255,255,255,.05);
-
-    color: #ccc;
-
-    font-size: .72rem;
-
-    font-weight: 700;
-
-    letter-spacing: .13em;
-
-    text-transform: uppercase;
-
-    animation:
-        fadeDown .8s ease both;
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 50px;
+  border: 1px solid var(--hp-border);
+  background: rgba(99,102,241,.08);
+  color: var(--hp-indigo);
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  animation: fadeUp .6s ease-out both;
 }
 
-.hero-dot {
-
-    width: 7px;
-    height: 7px;
-
-    border-radius: 50%;
-
-    background: var(--green);
-
-    box-shadow:
-        0 0 0 5px rgba(216,255,99,.08),
-        0 0 20px rgba(216,255,99,.8);
-
-    animation:
-        pulse 2s infinite;
+.hero-eyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--hp-indigo);
+  animation: pulse-dot 2s ease-in-out infinite;
 }
 
-@keyframes pulse {
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 
-    50% {
-        transform: scale(1.5);
-    }
-
+  50% {
+    opacity: .5;
+    transform: scale(1.5);
+  }
 }
-
-
-/* =========================================================
-   HERO TITLE
-========================================================= */
 
 .hero-title {
-
-    max-width: 1000px;
-
-    margin-top: 28px;
-
-    font-size:
-        clamp(3.6rem, 8vw, 7.5rem);
-
-    font-weight: 800;
-
-    line-height: .88;
-
-    letter-spacing: -.08em;
-
-    animation:
-        heroIn 1s cubic-bezier(.16,1,.3,1);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -.03em;
+  color: var(--hp-text);
+  margin-bottom: 24px;
+  animation: fadeUp .6s ease-out .1s both;
 }
 
-@keyframes heroIn {
-
-    from {
-        opacity: 0;
-        transform:
-            translateY(70px);
-    }
-
-    to {
-        opacity: 1;
-        transform:
-            translateY(0);
-    }
-
+.hero-title .word {
+  display: inline-block;
+  position: relative;
 }
 
-
-/* =========================================================
-   CHANGING WORD
-========================================================= */
-
-.word-box {
-
-    display: block;
-
-    position: relative;
-
-    height: 1em;
-
-    overflow: hidden;
-
-    color: var(--green);
+.hero-title .accent {
+  background: linear-gradient(135deg, var(--hp-indigo), var(--hp-teal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.word {
-
-    position: absolute;
-
-    left: 0;
-    top: 0;
-
-    width: 100%;
-
-    opacity: 0;
-
-    transform:
-        translateY(120%)
-        rotateX(-80deg);
-
-    animation:
-        wordChange 12s infinite;
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--hp-text-2);
+  line-height: 1.7;
+  max-width: 520px;
+  margin-bottom: 40px;
+  animation: fadeUp .6s ease-out .2s both;
 }
 
-.word:nth-child(1) {
-    animation-delay: 0s;
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 60px;
+  animation: fadeUp .6s ease-out .3s both;
 }
 
-.word:nth-child(2) {
-    animation-delay: 3s;
-}
-
-.word:nth-child(3) {
-    animation-delay: 6s;
-}
-
-.word:nth-child(4) {
-    animation-delay: 9s;
-}
-
-@keyframes wordChange {
-
-    0% {
-        opacity: 0;
-        transform:
-            translateY(120%)
-            rotateX(-80deg);
-    }
-
-    6% {
-        opacity: 1;
-        transform:
-            translateY(0)
-            rotateX(0);
-    }
-
-    20% {
-        opacity: 1;
-        transform:
-            translateY(0)
-            rotateX(0);
-    }
-
-    25% {
-        opacity: 0;
-        transform:
-            translateY(-120%)
-            rotateX(80deg);
-    }
-
-    100% {
-        opacity: 0;
-    }
-
-}
-
-
-/* =========================================================
-   DESCRIPTION
-========================================================= */
-
-.hero-description {
-
-    max-width: 590px;
-
-    margin-top: 30px;
-
-    color: #a4a4a4;
-
-    font-size: 1.05rem;
-
-    line-height: 1.8;
-
-    animation:
-        fadeUp 1s .3s ease both;
-}
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.hero-buttons {
-
-    display: flex;
-
-    flex-wrap: wrap;
-
-    gap: 12px;
-
-    margin-top: 30px;
-
-    animation:
-        fadeUp 1s .5s ease both;
-}
-
-.hero-btn {
-
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 14px 21px;
-
-    border-radius: 9px;
-
-    font-weight: 700;
-
-    text-decoration: none;
-
-    transition:
-        transform .3s ease,
-        background .3s ease;
-}
-
-.hero-btn:hover {
-
-    transform:
-        translateY(-4px);
+.hero-btn-primary,
+.hero-btn-secondary,
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  border-radius: var(--hp-r);
+  transition: all .3s var(--hp-ease);
 }
 
 .hero-btn-primary {
-
-    background: white;
-
-    color: #111;
+  padding: 14px 32px;
+  background: var(--hp-indigo);
+  color: #fff;
+  font-size: .95rem;
+  font-weight: 600;
+  border: none;
 }
 
 .hero-btn-primary:hover {
-
-    background:
-        var(--green);
-
-    color: #111;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(99,102,241,.35);
+  color: #fff;
 }
 
 .hero-btn-secondary {
-
-    border:
-        1px solid rgba(255,255,255,.2);
-
-    background:
-        rgba(255,255,255,.05);
-
-    color: white;
+  padding: 14px 32px;
+  background: transparent;
+  color: var(--hp-text);
+  border: 1px solid var(--hp-border-h);
+  font-size: .95rem;
+  font-weight: 500;
 }
 
 .hero-btn-secondary:hover {
-
-    background:
-        rgba(255,255,255,.13);
-
-    color: white;
+  border-color: var(--hp-indigo);
+  color: var(--hp-indigo);
+  background: rgba(99,102,241,.05);
+  transform: translateY(-2px);
 }
 
-
-/* =========================================================
-   FLOATING MOBILE / DESKTOP CARDS
-========================================================= */
-
-.float-card {
-
-    position: absolute;
-
-    z-index: 4;
-
-    padding: 12px 15px;
-
-    border:
-        1px solid rgba(255,255,255,.14);
-
-    border-radius: 12px;
-
-    background:
-        rgba(255,255,255,.08);
-
-    backdrop-filter: blur(15px);
-
-    box-shadow:
-        0 20px 50px rgba(0,0,0,.3);
-
-    color: white;
-
-    font-size: .78rem;
-
-    font-weight: 700;
-
-    pointer-events: none;
+.hero-stats {
+  display: flex;
+  gap: 48px;
+  animation: fadeUp .6s ease-out .4s both;
 }
 
-.float-card small {
-
-    display: block;
-
-    margin-bottom: 3px;
-
-    color: #888;
-
-    font-size: .62rem;
-
-    font-weight: 500;
+.hero-stat {
+  display: flex;
+  flex-direction: column;
 }
 
-.float-card.notes {
-
-    top: 24%;
-
-    right: 7%;
-
-    animation:
-        floating 5s ease-in-out infinite;
+.hero-stat-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--hp-text);
+  margin-bottom: 4px;
 }
 
-.float-card.ai {
-
-    top: 45%;
-
-    left: 5%;
-
-    animation:
-        floating 6s 1s ease-in-out infinite;
+.hero-stat-label {
+  font-size: .8rem;
+  color: var(--hp-text-3);
+  font-weight: 500;
 }
 
-.float-card.paper {
+/* MARQUEE */
 
-    bottom: 17%;
-
-    right: 14%;
-
-    animation:
-        floating 5.5s 2s ease-in-out infinite;
+.marquee-section {
+  background: var(--hp-bg);
+  border-top: 1px solid var(--hp-border);
+  border-bottom: 1px solid var(--hp-border);
+  padding: 20px 0;
+  overflow: hidden;
 }
 
-@keyframes floating {
-
-    0%,100% {
-        transform:
-            translateY(0)
-            rotate(0deg);
-    }
-
-    50% {
-        transform:
-            translateY(-18px)
-            rotate(2deg);
-    }
-
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
 }
 
-
-/* =========================================================
-   PRODUCT PREVIEW
-========================================================= */
-
-.product-preview {
-
-    position: relative;
-
-    margin-top: 90px;
-
-    padding: 10px;
-
-    border:
-        1px solid rgba(255,255,255,.14);
-
-    border-radius: 20px;
-
-    background:
-        rgba(255,255,255,.06);
-
-    box-shadow:
-        0 40px 100px rgba(0,0,0,.55);
-
-    backdrop-filter: blur(20px);
-
-    animation:
-        previewIn 1.2s .3s cubic-bezier(.16,1,.3,1) both,
-        previewFloat 6s 1.5s ease-in-out infinite;
+.marquee-track:hover {
+  animation-play-state: paused;
 }
 
-@keyframes previewIn {
-
-    from {
-        opacity: 0;
-        transform:
-            translateY(100px)
-            scale(.94);
-    }
-
-    to {
-        opacity: 1;
-        transform:
-            translateY(0)
-            scale(1);
-    }
-
+.marquee-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 32px;
+  white-space: nowrap;
+  color: var(--hp-text-3);
+  font-size: .85rem;
+  font-weight: 500;
 }
 
-@keyframes previewFloat {
-
-    50% {
-        transform:
-            translateY(-10px);
-    }
-
+.marquee-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--hp-border-h);
 }
 
-.preview-window {
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
 
-    overflow: hidden;
-
-    border-radius: 13px;
-
-    background: #f6f6f3;
-
-    color: #111;
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
-.preview-bar {
+/* FEATURES */
 
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    padding: 13px 17px;
-
-    background: white;
-
-    border-bottom:
-        1px solid #e5e5e5;
+.features-section,
+.ai-section,
+.proof-section,
+.cta-section {
+  background: var(--hp-bg);
+  color: var(--hp-text);
+  padding: 120px 24px;
 }
 
-.dots {
-
-    display: flex;
-
-    gap: 6px;
+.features-wrapper,
+.proof-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.dots span {
-
-    width: 7px;
-    height: 7px;
-
-    border-radius: 50%;
-
-    background: #ccc;
+.section-header {
+  margin-bottom: 72px;
 }
 
-.preview-body {
-
-    padding: 25px;
-}
-
-.preview-box {
-
-    padding: 20px;
-
-    border:
-        1px solid #e5e5e5;
-
-    border-radius: 13px;
-
-    background: white;
-
-    transition:
-        transform .3s ease;
-}
-
-.preview-box:hover {
-
-    transform:
-        translateY(-6px);
-}
-
-.progress {
-
-    height: 6px;
-
-    margin-top: 15px;
-
-    overflow: hidden;
-
-    border-radius: 50px;
-
-    background: #eee;
-}
-
-.progress span {
-
-    display: block;
-
-    width: 72%;
-
-    height: 100%;
-
-    border-radius: inherit;
-
-    background:
-        linear-gradient(
-            90deg,
-            #8067ff,
-            #a78bfa
-        );
-
-    animation:
-        progressGrow 2s ease;
-}
-
-@keyframes progressGrow {
-
-    from {
-        width: 0;
-    }
-
-}
-
-
-/* =========================================================
-   FEATURES
-========================================================= */
-
-.features-section {
-
-    padding: 120px 0;
-
-    background:
-        #f7f7f4;
-}
-
-.section-label {
-
-    color:
-        var(--purple);
-
-    font-size: .72rem;
-
-    font-weight: 800;
-
-    letter-spacing: .14em;
-
-    text-transform: uppercase;
+.section-eyebrow {
+  display: inline-block;
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--hp-indigo);
+  margin-bottom: 16px;
 }
 
 .section-title {
-
-    max-width: 850px;
-
-    margin-top: 15px;
-
-    font-size:
-        clamp(2.7rem, 5vw, 5rem);
-
-    font-weight: 800;
-
-    line-height: .95;
-
-    letter-spacing: -.07em;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--hp-text);
+  line-height: 1.1;
+  margin-bottom: 16px;
 }
 
-.section-description {
-
-    max-width: 600px;
-
-    margin-top: 20px;
-
-    color: #777;
-
-    line-height: 1.8;
+.section-desc {
+  font-size: 1.1rem;
+  color: var(--hp-text-2);
+  max-width: 500px;
+  line-height: 1.6;
 }
 
-.feature {
-
-    height: 100%;
-
-    padding: 30px;
-
-    border:
-        1px solid #e4e4e0;
-
-    border-radius: 18px;
-
-    background: white;
-
-    opacity: 0;
-
-    transform:
-        translateY(70px);
-
-    transition:
-        opacity .7s ease,
-        transform .7s cubic-bezier(.16,1,.3,1),
-        box-shadow .3s ease;
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
 }
 
-.feature.visible {
-
-    opacity: 1;
-
-    transform:
-        translateY(0);
+.feature-card {
+  position: relative;
+  padding: 40px 32px;
+  border-radius: 16px;
+  border: 1px solid var(--hp-border);
+  background: var(--hp-surface);
+  transition: all .4s var(--hp-ease);
+  overflow: hidden;
 }
 
-.feature:hover {
+.feature-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--card-accent, var(--hp-indigo)),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity .4s;
+}
 
-    transform:
-        translateY(-10px);
+.feature-card:hover {
+  border-color: var(--hp-border-h);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0,0,0,.3);
+}
 
-    box-shadow:
-        0 30px 60px rgba(0,0,0,.09);
+.feature-card:hover::before {
+  opacity: 1;
+}
+
+.feature-card:nth-child(1) {
+  --card-accent: #6366f1;
+}
+
+.feature-card:nth-child(2) {
+  --card-accent: #f43f5e;
+}
+
+.feature-card:nth-child(3) {
+  --card-accent: #14b8a6;
 }
 
 .feature-icon {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    width: 50px;
-    height: 50px;
-
-    margin-bottom: 25px;
-
-    border-radius: 13px;
-
-    background:
-        #eeeaff;
-
-    color:
-        var(--purple);
-
-    font-weight: 800;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
 }
 
-.feature h3 {
-
-    font-weight: 800;
-
-    letter-spacing: -.03em;
+.feature-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: #fff;
+  stroke-width: 1.5;
+  fill: none;
 }
 
-.feature p {
-
-    margin-top: 12px;
-
-    color: #777;
-
-    line-height: 1.7;
+.feature-icon--notes {
+  background: linear-gradient(135deg, #6366f1, #818cf8);
 }
 
-.feature a {
-
-    display: inline-block;
-
-    margin-top: 20px;
-
-    color: #111;
-
-    font-weight: 800;
-
-    text-decoration: none;
+.feature-icon--papers {
+  background: linear-gradient(135deg, #f43f5e, #fb7185);
 }
 
-.feature a:hover {
-
-    color: var(--purple);
+.feature-icon--ai {
+  background: linear-gradient(135deg, #14b8a6, #2dd4bf);
 }
 
-
-/* =========================================================
-   AI SECTION
-========================================================= */
-
-.ai-section {
-
-    position: relative;
-
-    overflow: hidden;
-
-    padding: 120px 0;
-
-    background:
-        #090909;
-
-    color: white;
+.feature-card-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--hp-text);
+  margin-bottom: 12px;
 }
 
-.ai-section::before {
-
-    position: absolute;
-
-    content: "";
-
-    width: 600px;
-    height: 600px;
-
-    right: -220px;
-    top: -250px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(128,103,255,.3),
-            transparent 70%
-        );
-
-    animation:
-        aiMove 8s ease-in-out infinite alternate;
+.feature-card-desc {
+  font-size: .95rem;
+  color: var(--hp-text-2);
+  line-height: 1.65;
+  margin-bottom: 24px;
 }
 
-@keyframes aiMove {
-
-    to {
-        transform:
-            translate(-100px,130px)
-            scale(1.2);
-    }
-
+.feature-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--card-accent, var(--hp-indigo));
+  font-size: .875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: gap .3s var(--hp-ease);
 }
 
-.ai-title {
-
-    max-width: 850px;
-
-    font-size:
-        clamp(3rem, 6vw, 6rem);
-
-    font-weight: 800;
-
-    line-height: .92;
-
-    letter-spacing: -.075em;
+.feature-card:hover .feature-card-link {
+  gap: 12px;
 }
 
-.ai-title span {
-
-    color:
-        var(--green);
+.feature-card-link svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
 }
 
-.ai-text {
+/* AI */
 
-    max-width: 580px;
-
-    margin-top: 25px;
-
-    color: #999;
-
-    line-height: 1.8;
+.ai-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
 }
 
-.ai-chat {
-
-    max-width: 750px;
-
-    margin-top: 50px;
-
-    padding: 25px;
-
-    border:
-        1px solid rgba(255,255,255,.12);
-
-    border-radius: 18px;
-
-    background:
-        rgba(255,255,255,.05);
-
-    backdrop-filter: blur(20px);
+.ai-text .section-desc {
+  margin-bottom: 32px;
 }
 
-.chat-line {
+.ai-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
-    display: flex;
+.ai-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  color: var(--hp-text-2);
+  font-size: .95rem;
+  line-height: 1.5;
+}
 
-    gap: 12px;
+.ai-feature-check {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(20,184,166,.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    margin-bottom: 18px;
+.ai-feature-check svg {
+  width: 12px;
+  height: 12px;
+  stroke: var(--hp-teal);
+  stroke-width: 2.5;
+  fill: none;
+}
 
+.ai-mockup-card {
+  background: var(--hp-surface);
+  border: 1px solid var(--hp-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.4);
+}
+
+.ai-mockup-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--hp-border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ai-mockup-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.ai-mockup-dot:nth-child(1) {
+  background: #f43f5e;
+}
+
+.ai-mockup-dot:nth-child(2) {
+  background: #f59e0b;
+}
+
+.ai-mockup-dot:nth-child(3) {
+  background: #14b8a6;
+}
+
+.ai-mockup-title {
+  font-size: .8rem;
+  color: var(--hp-text-3);
+  margin-left: 8px;
+}
+
+.ai-mockup-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ai-msg {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: .875rem;
+  line-height: 1.5;
+}
+
+.ai-msg--user {
+  align-self: flex-end;
+  background: var(--hp-indigo);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.ai-msg--bot {
+  align-self: flex-start;
+  background: var(--hp-surface-2);
+  border: 1px solid var(--hp-border);
+  color: var(--hp-text-2);
+  border-bottom-left-radius: 4px;
+}
+
+.ai-msg-typing {
+  display: flex;
+  gap: 4px;
+}
+
+.ai-msg-typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--hp-text-3);
+  animation: typing 1.2s ease-in-out infinite;
+}
+
+.ai-msg-typing span:nth-child(2) {
+  animation-delay: .15s;
+}
+
+.ai-msg-typing span:nth-child(3) {
+  animation-delay: .3s;
+}
+
+@keyframes typing {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: .4;
+  }
+
+  30% {
+    transform: translateY(-5px);
+    opacity: 1;
+  }
+}
+
+.ai-mockup-input {
+  padding: 16px 20px;
+  border-top: 1px solid var(--hp-border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ai-mockup-input-field {
+  flex: 1;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--hp-border);
+  background: var(--hp-surface-2);
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  color: var(--hp-text-3);
+  font-size: .8rem;
+}
+
+.ai-mockup-input-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  background: var(--hp-indigo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ai-mockup-input-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: #fff;
+  stroke-width: 2;
+  fill: none;
+}
+
+/* STATS */
+
+.proof-section {
+  border-top: 1px solid var(--hp-border);
+}
+
+.proof-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 80px;
+}
+
+.proof-stat {
+  text-align: center;
+  padding: 40px 20px;
+  border-radius: 16px;
+  border: 1px solid var(--hp-border);
+  background: var(--hp-surface);
+  transition: all .3s var(--hp-ease);
+}
+
+.proof-stat:hover {
+  border-color: var(--hp-border-h);
+  transform: translateY(-4px);
+}
+
+.proof-stat-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 700;
+  color: var(--hp-text);
+  margin-bottom: 8px;
+}
+
+.proof-stat-label {
+  font-size: .85rem;
+  color: var(--hp-text-3);
+}
+
+/* TESTIMONIALS */
+
+.proof-testimonials-title {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.proof-testimonials-title h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  color: var(--hp-text);
+}
+
+.proof-testimonials-title p {
+  color: var(--hp-text-3);
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.testimonial-card {
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid var(--hp-border);
+  background: var(--hp-surface);
+  transition: all .3s var(--hp-ease);
+}
+
+.testimonial-card:hover {
+  border-color: var(--hp-border-h);
+}
+
+.testimonial-stars {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 16px;
+}
+
+.testimonial-stars svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--hp-amber);
+}
+
+.testimonial-text {
+  font-size: .95rem;
+  color: var(--hp-text-2);
+  line-height: 1.65;
+  margin-bottom: 20px;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.testimonial-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--hp-indigo), var(--hp-teal));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: .8rem;
+}
+
+.testimonial-name {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--hp-text);
+}
+
+.testimonial-role {
+  font-size: .75rem;
+  color: var(--hp-text-3);
+}
+
+/* CTA */
+
+.cta-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  padding: 80px 40px;
+  border-radius: 24px;
+  background: var(--hp-surface);
+  border: 1px solid var(--hp-border);
+  overflow: hidden;
+}
+
+.cta-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(99,102,241,.12), transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(20,184,166,.1), transparent 50%);
+}
+
+.cta-title,
+.cta-desc,
+.cta-btn {
+  position: relative;
+}
+
+.cta-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  color: var(--hp-text);
+  margin-bottom: 16px;
+}
+
+.cta-desc {
+  font-size: 1.1rem;
+  color: var(--hp-text-2);
+  margin-bottom: 36px;
+}
+
+.cta-btn {
+  padding: 16px 40px;
+  background: var(--hp-indigo);
+  color: #fff;
+  font-weight: 600;
+}
+
+.cta-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(99,102,241,.4);
+  color: #fff;
+}
+
+/* ANIMATIONS */
+
+@keyframes fadeUp {
+  from {
     opacity: 0;
+    transform: translateY(24px);
+  }
 
-    transform:
-        translateX(-30px);
-
-    animation:
-        chatIn .7s forwards;
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.chat-line:nth-child(1) {
-    animation-delay: .5s;
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity .7s var(--hp-ease), transform .7s var(--hp-ease);
 }
 
-.chat-line:nth-child(2) {
-    animation-delay: 1.5s;
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-@keyframes chatIn {
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateX(0);
-    }
-
+.stagger > *:nth-child(1) {
+  transition-delay: 0ms;
 }
 
-.chat-avatar {
-
-    display: flex;
-
-    flex-shrink: 0;
-
-    align-items: center;
-
-    justify-content: center;
-
-    width: 35px;
-    height: 35px;
-
-    border-radius: 9px;
-
-    background:
-        var(--purple);
-
-    font-size: .7rem;
-
-    font-weight: 800;
+.stagger > *:nth-child(2) {
+  transition-delay: 100ms;
 }
 
-.chat-text {
-
-    padding: 12px 15px;
-
-    border-radius: 10px;
-
-    background:
-        rgba(255,255,255,.07);
-
-    color: #ccc;
-
-    line-height: 1.6;
+.stagger > *:nth-child(3) {
+  transition-delay: 200ms;
 }
 
-
-/* =========================================================
-   CTA
-========================================================= */
-
-.cta {
-
-    padding: 120px 0;
-
-    background:
-        var(--green);
+.stagger > *:nth-child(4) {
+  transition-delay: 300ms;
 }
 
-.cta h2 {
+/* RESPONSIVE */
 
-    max-width: 900px;
+@media (max-width: 1024px) {
+  .ai-wrapper {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
 
-    margin: auto;
+  .features-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 
-    text-align: center;
+  .proof-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-    font-size:
-        clamp(3rem, 7vw, 7rem);
-
-    font-weight: 800;
-
-    line-height: .9;
-
-    letter-spacing: -.08em;
+  .testimonials-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
-.cta p {
+@media (max-width: 768px) {
+  .hero {
+    padding: 100px 20px 60px;
+    min-height: auto;
+  }
 
-    max-width: 580px;
+  .hero-stats {
+    gap: 24px;
+    flex-wrap: wrap;
+  }
 
-    margin: 25px auto 30px;
+  .hero-stat-number {
+    font-size: 1.5rem;
+  }
 
-    text-align: center;
+  .features-grid,
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
 
-    color: #444;
+  .proof-stats {
+    grid-template-columns: 1fr 1fr;
+  }
 
-    line-height: 1.7;
+  .cta-wrapper {
+    padding: 48px 24px;
+  }
+
+  .hero-blob {
+    width: 300px;
+    height: 300px;
+  }
 }
 
-.cta-button {
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
 
-    display: inline-block;
+  .hero-actions {
+    flex-direction: column;
+  }
 
-    padding: 14px 24px;
+  .hero-btn-primary,
+  .hero-btn-secondary {
+    width: 100%;
+  }
 
-    border-radius: 9px;
-
-    background: #111;
-
-    color: white;
-
-    font-weight: 700;
-
-    text-decoration: none;
-
-    transition:
-        transform .3s ease;
+  .hero-stats {
+    flex-direction: column;
+    gap: 16px;
+  }
 }
-
-.cta-button:hover {
-
-    transform:
-        translateY(-4px);
-
-    color: white;
-}
-
-
-/* =========================================================
-   MOBILE DYNAMIC DESIGN
-========================================================= */
-
-@media (max-width: 767px) {
-
-    .dynamic-hero {
-
-        min-height:
-            100svh;
-
-    }
-
-    .hero-content {
-
-        padding-top: 65px;
-
-        padding-bottom: 60px;
-    }
-
-    .hero-label {
-
-        font-size: .62rem;
-
-    }
-
-    .hero-title {
-
-        margin-top: 22px;
-
-        font-size:
-            clamp(3rem, 15vw, 5rem);
-
-        line-height: .9;
-
-    }
-
-    .hero-description {
-
-        margin-top: 24px;
-
-        font-size: .94rem;
-
-        line-height: 1.7;
-
-    }
-
-    .hero-buttons {
-
-        display: grid;
-
-        grid-template-columns:
-            1fr 1fr;
-
-        gap: 8px;
-    }
-
-    .hero-btn {
-
-        width: 100%;
-
-        padding: 13px 10px;
-
-        font-size: .82rem;
-
-        text-align: center;
-    }
-
-
-    /* -----------------------------------------
-       MOBILE FLOATING CARDS
-    ----------------------------------------- */
-
-    .float-card {
-
-        position: absolute;
-
-        padding: 9px 11px;
-
-        border-radius: 10px;
-
-        font-size: .67rem;
-
-        backdrop-filter: blur(12px);
-    }
-
-    .float-card small {
-
-        font-size: .52rem;
-    }
-
-    .float-card.notes {
-
-        top: 13%;
-
-        right: 4%;
-
-        animation:
-            mobileFloat1 4s ease-in-out infinite;
-    }
-
-    .float-card.ai {
-
-        top: 37%;
-
-        left: 2%;
-
-        animation:
-            mobileFloat2 4.5s ease-in-out infinite;
-    }
-
-    .float-card.paper {
-
-        top: 51%;
-
-        right: 5%;
-
-        animation:
-            mobileFloat3 5s ease-in-out infinite;
-    }
-
-    @keyframes mobileFloat1 {
-
-        0%,100% {
-            transform:
-                translate(0,0)
-                rotate(4deg);
-        }
-
-        50% {
-            transform:
-                translate(-10px,15px)
-                rotate(-4deg);
-        }
-
-    }
-
-    @keyframes mobileFloat2 {
-
-        0%,100% {
-            transform:
-                translate(0,0)
-                rotate(-4deg);
-        }
-
-        50% {
-            transform:
-                translate(12px,-12px)
-                rotate(3deg);
-        }
-
-    }
-
-    @keyframes mobileFloat3 {
-
-        0%,100% {
-            transform:
-                translate(0,0)
-                rotate(3deg);
-        }
-
-        50% {
-            transform:
-                translate(-12px,-15px)
-                rotate(-3deg);
-        }
-
-    }
-
-
-    /* -----------------------------------------
-       MOBILE PRODUCT PREVIEW
-    ----------------------------------------- */
-
-    .product-preview {
-
-        margin-top: 65px;
-
-        padding: 7px;
-
-        border-radius: 15px;
-    }
-
-    .preview-body {
-
-        padding: 12px;
-
-    }
-
-    .preview-box {
-
-        padding: 15px;
-
-    }
-
-    .preview-box h5 {
-
-        font-size: .9rem;
-
-    }
-
-    .preview-box small {
-
-        font-size: .68rem;
-
-    }
-
-
-    /* -----------------------------------------
-       MOBILE FEATURE SECTION
-    ----------------------------------------- */
-
-    .features-section {
-
-        padding:
-            80px 0;
-    }
-
-    .section-title {
-
-        font-size:
-            3rem;
-
-    }
-
-    .feature {
-
-        padding: 24px;
-
-        border-radius: 16px;
-    }
-
-
-    /* -----------------------------------------
-       MOBILE AI
-    ----------------------------------------- */
-
-    .ai-section {
-
-        padding:
-            80px 0;
-    }
-
-    .ai-title {
-
-        font-size:
-            3.2rem;
-
-    }
-
-    .ai-chat {
-
-        padding:
-            16px;
-
-        border-radius:
-            15px;
-    }
-
-    .chat-text {
-
-        font-size:
-            .78rem;
-    }
-
-
-    /* -----------------------------------------
-       MOBILE CTA
-    ----------------------------------------- */
-
-    .cta {
-
-        padding:
-            80px 0;
-    }
-
-    .cta h2 {
-
-        font-size:
-            3.2rem;
-    }
-
-}
-
-
-/* =========================================================
-   SMALL PHONES
-========================================================= */
-
-@media (max-width: 380px) {
-
-    .hero-title {
-
-        font-size:
-            2.75rem;
-    }
-
-    .hero-buttons {
-
-        grid-template-columns:
-            1fr;
-    }
-
-    .float-card {
-
-        transform:
-            scale(.85);
-    }
-
-}
-
-
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
 
-    *,
-    *::before,
-    *::after {
+  .hero-blob {
+    transition: none;
+  }
 
-        animation-duration:
-            .01ms !important;
-
-        animation-iteration-count:
-            1 !important;
-
-        scroll-behavior:
-            auto !important;
-    }
-
+  .reveal {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
 }
-
 </style>
-
 {% endblock %}
-
 
 {% block content %}
 
+<div class="hp">
 
-<!-- =====================================================
-     HERO
-===================================================== -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-blob hero-blob--indigo" id="blob-indigo"></div>
+    <div class="hero-blob hero-blob--teal" id="blob-teal"></div>
+    <div class="hero-blob hero-blob--rose" id="blob-rose"></div>
+    <div class="hero-grid"></div>
+  </div>
 
-<section class="dynamic-hero">
+  <div class="hero-content">
 
-    <div class="glow glow-purple"></div>
+    <div class="hero-eyebrow">
+      For AKTU B.Tech Students
+    </div>
 
-    <div class="glow glow-green"></div>
+    <h1 class="hero-title">
+      <span class="word">B.Tech</span><br>
+      <span class="word accent">made simple.</span>
+    </h1>
 
+    <p class="hero-subtitle">
+      Notes, previous year papers, and AI-powered study help — everything you need to ace your AKTU exams, organized in one place.
+    </p>
 
-    <!-- FLOATING CARDS -->
+    <div class="hero-actions">
 
-    <div class="float-card notes">
+      {% if request.user.is_authenticated %}
 
-        <small>STUDY</small>
+      <a href="{% url 'Notes' %}" class="hero-btn-primary">
+        Explore notes
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14"/>
+          <path d="m12 5 7 7-7 7"/>
+        </svg>
+      </a>
 
-        📚 Notes
+      <a href="{% url 'chatbot' %}" class="hero-btn-secondary">
+        Ask AI help
+      </a>
+
+      {% else %}
+
+      <a href="{% url 'Notes' %}" class="hero-btn-primary">
+        Explore notes
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14"/>
+          <path d="m12 5 7 7-7 7"/>
+        </svg>
+      </a>
+
+      <a href="{% url 'register' %}" class="hero-btn-secondary">
+        Create free account
+      </a>
+
+      {% endif %}
 
     </div>
 
+    <div class="hero-stats">
 
-    <div class="float-card ai">
+      <div class="hero-stat">
+        <span class="hero-stat-number">15K+</span>
+        <span class="hero-stat-label">Active students</span>
+      </div>
 
-        <small>AI ASSISTANT</small>
+      <div class="hero-stat">
+        <span class="hero-stat-number">500+</span>
+        <span class="hero-stat-label">Study notes</span>
+      </div>
 
-        ✦ Ask AI
+      <div class="hero-stat">
+        <span class="hero-stat-number">50+</span>
+        <span class="hero-stat-label">Previous papers</span>
+      </div>
 
     </div>
 
-
-    <div class="float-card paper">
-
-        <small>EXAM PREP</small>
-
-        ◫ Papers
-
-    </div>
-
-
-    <div class="container hero-content">
-
-
-        <span class="hero-label">
-
-            <span class="hero-dot"></span>
-
-            E-Learning Platform
-
-        </span>
-
-
-        {% if request.user.is_authenticated %}
-
-            <h1 class="hero-title">
-
-                Welcome back,
-
-                <span style="color:white;">
-                    {{ request.user.username }}
-                </span>
-
-                <span class="word-box">
-
-                    <span class="word">
-                        Keep learning.
-                    </span>
-
-                    <span class="word">
-                        Keep growing.
-                    </span>
-
-                    <span class="word">
-                        Keep improving.
-                    </span>
-
-                    <span class="word">
-                        Build your future.
-                    </span>
-
-                </span>
-
-            </h1>
-
-        {% else %}
-
-            <h1 class="hero-title">
-
-                Learn
-
-                <span class="word-box">
-
-                    <span class="word">
-                        smarter.
-                    </span>
-
-                    <span class="word">
-                        faster.
-                    </span>
-
-                    <span class="word">
-                        better.
-                    </span>
-
-                    <span class="word">
-                        together.
-                    </span>
-
-                </span>
-
-            </h1>
-
-        {% endif %}
-
-
-        <p class="hero-description">
-
-            Everything you need for your AKTU preparation —
-            notes, previous papers, academic resources and
-            AI-powered study assistance in one intelligent
-            learning platform.
-
-        </p>
-
-
-        <div class="hero-buttons">
-
-            <a
-                href="{% url 'Notes' %}"
-                class="hero-btn hero-btn-primary">
-
-                Explore Notes →
-
-            </a>
-
-
-            {% if request.user.is_authenticated %}
-
-                <a
-                    href="{% url 'chatbot' %}"
-                    class="hero-btn hero-btn-secondary">
-
-                    Ask AI
-
-                </a>
-
-            {% else %}
-
-                <a
-                    href="{% url 'register' %}"
-                    class="hero-btn hero-btn-secondary">
-
-                    Join Free
-
-                </a>
-
-            {% endif %}
-
-        </div>
-
-
-        <!-- =================================================
-             PRODUCT PREVIEW
-        ================================================= -->
-
-        <div class="product-preview">
-
-            <div class="preview-window">
-
-
-                <div class="preview-bar">
-
-                    <div class="dots">
-
-                        <span></span>
-                        <span></span>
-                        <span></span>
-
-                    </div>
-
-
-                    <small>
-
-                        {% if request.user.is_authenticated %}
-                            {{ request.user.username }}
-                        {% else %}
-                            AKTU Student
-                        {% endif %}
-
-                    </small>
-
-                </div>
-
-
-                <div class="preview-body">
-
-                    <div class="row g-3">
-
-
-                        <div class="col-md-4">
-
-                            <div class="preview-box">
-
-                                <small class="text-secondary">
-                                    Study Material
-                                </small>
-
-                                <h5 class="mt-2 fw-bold">
-                                    Notes
-                                </h5>
-
-                                <div class="progress">
-
-                                    <span></span>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="col-md-4">
-
-                            <div class="preview-box">
-
-                                <small class="text-secondary">
-                                    Exam Preparation
-                                </small>
-
-                                <h5 class="mt-2 fw-bold">
-                                    Previous Papers
-                                </h5>
-
-                                <div class="progress">
-
-                                    <span style="width:58%;"></span>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="col-md-4">
-
-                            <div class="preview-box">
-
-                                <small class="text-secondary">
-                                    AI Assistance
-                                </small>
-
-                                <h5 class="mt-2 fw-bold">
-                                    Study AI
-                                </h5>
-
-                                <div class="progress">
-
-                                    <span style="width:86%;"></span>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
+  </div>
 </section>
 
+<div class="marquee-section">
+  <div class="marquee-track">
 
-<!-- =====================================================
-     FEATURES
-===================================================== -->
+    <span class="marquee-item"><span class="marquee-dot"></span>Computer Science</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Electronics & Communication</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Mechanical</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Civil</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Information Technology</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Electrical</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Chemical</span>
+
+    <span class="marquee-item"><span class="marquee-dot"></span>Computer Science</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Electronics & Communication</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Mechanical</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Civil</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Information Technology</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Electrical</span>
+    <span class="marquee-item"><span class="marquee-dot"></span>Chemical</span>
+
+  </div>
+</div>
 
 <section class="features-section">
 
-    <div class="container">
+  <div class="features-wrapper">
 
+    <div class="section-header reveal">
+      <span class="section-eyebrow">What you get</span>
+      <h2 class="section-title">
+        Everything organized.<br>
+        One platform.
+      </h2>
+      <p class="section-desc">
+        Smart resources designed specifically for AKTU B.Tech students.
+      </p>
+    </div>
 
-        <div class="section-label">
-            Everything in one place
+    <div class="features-grid stagger">
+
+      <div class="feature-card reveal">
+
+        <div class="feature-icon feature-icon--notes">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
         </div>
 
+        <h3 class="feature-card-title">Study Notes</h3>
 
-        <h2 class="section-title">
-
-            One platform.
-            Everything you need.
-
-        </h2>
-
-
-        <p class="section-description">
-
-            Spend less time searching for study material
-            and more time actually learning.
-
+        <p class="feature-card-desc">
+          Subject-wise material organized by semester and branch for quick access.
         </p>
 
+        <a href="{% url 'Notes' %}" class="feature-card-link">
+          Browse notes →
+        </a>
 
-        <div class="row g-4 mt-4">
+      </div>
 
+      <div class="feature-card reveal">
 
-            <!-- NOTES -->
-
-            <div class="col-md-6 col-xl-3">
-
-                <article class="feature reveal">
-
-                    <div class="feature-icon">
-                        N
-                    </div>
-
-                    <h3>
-                        Notes
-                    </h3>
-
-                    <p>
-                        Subject-wise notes for faster
-                        revision and preparation.
-                    </p>
-
-                    <a href="{% url 'Notes' %}">
-                        Browse Notes →
-                    </a>
-
-                </article>
-
-            </div>
-
-
-            <!-- PAPERS -->
-
-            <div class="col-md-6 col-xl-3">
-
-                <article class="feature reveal">
-
-                    <div class="feature-icon">
-                        P
-                    </div>
-
-                    <h3>
-                        Previous Papers
-                    </h3>
-
-                    <p>
-                        Practice real examination papers
-                        and understand exam patterns.
-                    </p>
-
-                    <a href="{% url 'paper' %}">
-                        View Papers →
-                    </a>
-
-                </article>
-
-            </div>
-
-
-            <!-- RESOURCES -->
-
-            <div class="col-md-6 col-xl-3">
-
-                <article class="feature reveal">
-
-                    <div class="feature-icon">
-                        R
-                    </div>
-
-                    <h3>
-                        Resources
-                    </h3>
-
-                    <p>
-                        Assignments, practical material
-                        and useful academic resources.
-                    </p>
-
-                    <a href="{% url 'Resource' %}">
-                        Explore Resources →
-                    </a>
-
-                </article>
-
-            </div>
-
-
-            <!-- AI -->
-
-            <div class="col-md-6 col-xl-3">
-
-                <article class="feature reveal">
-
-                    <div class="feature-icon">
-                        AI
-                    </div>
-
-                    <h3>
-                        AI Study Help
-                    </h3>
-
-                    <p>
-                        Get explanations when a topic
-                        becomes difficult.
-                    </p>
-
-                    <a href="{% url 'chatbot' %}">
-                        Ask AI →
-                    </a>
-
-                </article>
-
-            </div>
-
-
+        <div class="feature-icon feature-icon--papers">
+          <svg viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
         </div>
+
+        <h3 class="feature-card-title">Previous Papers</h3>
+
+        <p class="feature-card-desc">
+          Access previous year papers and practice important exam questions.
+        </p>
+
+        <a href="{% url 'paper' %}" class="feature-card-link">
+          Practice with PYQs →
+        </a>
+
+      </div>
+
+      <div class="feature-card reveal">
+
+        <div class="feature-icon feature-icon--ai">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.57-3.25 3.93"/>
+            <circle cx="10" cy="6" r="1" fill="currentColor"/>
+            <circle cx="14" cy="6" r="1" fill="currentColor"/>
+          </svg>
+        </div>
+
+        <h3 class="feature-card-title">AI Study Help</h3>
+
+        <p class="feature-card-desc">
+          Ask academic questions and get clear explanations with AI-powered assistance.
+        </p>
+
+        <a href="{% url 'chatbot' %}" class="feature-card-link">
+          Try AI tutor →
+        </a>
+
+      </div>
 
     </div>
 
+  </div>
+
 </section>
-
-
-<!-- =====================================================
-     AI SECTION
-===================================================== -->
 
 <section class="ai-section">
 
-    <div class="container">
+  <div class="ai-wrapper">
 
+    <div class="ai-text reveal">
 
-        <div class="section-label">
-            AI-powered learning
+      <span class="section-eyebrow">AI-Powered</span>
+
+      <h2 class="section-title">
+        Your personal study assistant
+      </h2>
+
+      <p class="section-desc">
+        Stuck on a concept? Need help with a problem? Get clear explanations and study assistance when you need it.
+      </p>
+
+      <ul class="ai-features">
+
+        <li class="ai-feature-item">
+          <span class="ai-feature-check">✓</span>
+          Concept explanations in simple language
+        </li>
+
+        <li class="ai-feature-item">
+          <span class="ai-feature-check">✓</span>
+          Programming help for assignments
+        </li>
+
+        <li class="ai-feature-item">
+          <span class="ai-feature-check">✓</span>
+          Exam revision and preparation
+        </li>
+
+      </ul>
+
+      <a href="{% url 'chatbot' %}" class="hero-btn-primary">
+        Start a conversation →
+      </a>
+
+    </div>
+
+    <div class="ai-mockup reveal">
+
+      <div class="ai-mockup-card">
+
+        <div class="ai-mockup-header">
+          <div class="ai-mockup-dot"></div>
+          <div class="ai-mockup-dot"></div>
+          <div class="ai-mockup-dot"></div>
+
+          <span class="ai-mockup-title">
+            AI Study Help
+          </span>
         </div>
 
+        <div class="ai-mockup-body">
 
-        <h2 class="ai-title">
+          <div class="ai-msg ai-msg--user">
+            Explain the difference between TCP and UDP
+          </div>
 
-            Get stuck.
+          <div class="ai-msg ai-msg--bot">
+            TCP is reliable and connection-oriented, while UDP is faster and connectionless.
+          </div>
 
-            <span>Ask AI.</span>
+          <div class="ai-msg ai-msg--user">
+            Can you give me an analogy?
+          </div>
 
-            <br>
+          <div class="ai-msg ai-msg--bot">
+            TCP is like making a phone call and confirming every message. UDP is like sending a postcard without waiting for confirmation.
+          </div>
 
-            Keep moving.
+          <div class="ai-msg ai-msg--bot">
+            <div class="ai-msg-typing">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
 
-        </h2>
+        </div>
 
+        <div class="ai-mockup-input">
 
-        <p class="ai-text">
+          <div class="ai-mockup-input-field">
+            Type your question...
+          </div>
 
-            Don't spend an hour searching for an explanation.
-            Ask your AI study assistant and understand the
-            concept quickly.
+          <div class="ai-mockup-input-btn">
+            →
+          </div>
 
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<section class="proof-section">
+
+  <div class="proof-wrapper">
+
+    <div class="proof-stats stagger">
+
+      <div class="proof-stat reveal">
+        <div class="proof-stat-number">15K+</div>
+        <div class="proof-stat-label">Students trust us</div>
+      </div>
+
+      <div class="proof-stat reveal">
+        <div class="proof-stat-number">500+</div>
+        <div class="proof-stat-label">Study notes</div>
+      </div>
+
+      <div class="proof-stat reveal">
+        <div class="proof-stat-number">50+</div>
+        <div class="proof-stat-label">Previous year papers</div>
+      </div>
+
+      <div class="proof-stat reveal">
+        <div class="proof-stat-number">24/7</div>
+        <div class="proof-stat-label">AI tutor available</div>
+      </div>
+
+    </div>
+
+    <div class="proof-testimonials-title reveal">
+      <h3>What students say</h3>
+      <p>Feedback from students using the platform</p>
+    </div>
+
+    <div class="testimonials-grid stagger">
+
+      <div class="testimonial-card reveal">
+
+        <div class="testimonial-stars">★★★★★</div>
+
+        <p class="testimonial-text">
+          "This site saved me before every exam. The notes are well-organized and easy to access."
         </p>
 
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">RS</div>
 
-        <div class="ai-chat">
-
-
-            <div class="chat-line">
-
-                <div class="chat-avatar">
-                    YOU
-                </div>
-
-                <div class="chat-text">
-
-                    Explain binary search in simple terms.
-
-                </div>
-
-            </div>
-
-
-            <div class="chat-line">
-
-                <div class="chat-avatar">
-                    AI
-                </div>
-
-                <div class="chat-text">
-
-                    Binary search repeatedly divides a
-                    sorted list into two halves and checks
-                    which half can contain the answer.
-
-                </div>
-
-            </div>
-
-
-            {% if request.user.is_authenticated %}
-
-                <a
-                    href="{% url 'chatbot' %}"
-                    class="hero-btn hero-btn-primary">
-
-                    Open AI Study Help →
-
-                </a>
-
-            {% else %}
-
-                <a
-                    href="{% url 'register' %}"
-                    class="hero-btn hero-btn-primary">
-
-                    Start Learning →
-
-                </a>
-
-            {% endif %}
-
-
+          <div>
+            <div class="testimonial-name">Rohit Sharma</div>
+            <div class="testimonial-role">CSE Student</div>
+          </div>
         </div>
 
-    </div>
+      </div>
 
-</section>
+      <div class="testimonial-card reveal">
 
+        <div class="testimonial-stars">★★★★★</div>
 
-<!-- =====================================================
-     CTA
-===================================================== -->
+        <p class="testimonial-text">
+          "The previous year papers section is extremely helpful for understanding exam patterns."
+        </p>
 
-<section class="cta">
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">AP</div>
 
-    <div class="container">
+          <div>
+            <div class="testimonial-name">Ananya Patel</div>
+            <div class="testimonial-role">ECE Student</div>
+          </div>
+        </div>
 
+      </div>
 
-        {% if request.user.is_authenticated %}
+      <div class="testimonial-card reveal">
 
-            <h2>
+        <div class="testimonial-stars">★★★★★</div>
 
-                Ready for your
-                next study session?
+        <p class="testimonial-text">
+          "Clean, simple and useful. Everything I need for studying is organized in one place."
+        </p>
 
-            </h2>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">VK</div>
 
-            <p>
+          <div>
+            <div class="testimonial-name">Vikram Kumar</div>
+            <div class="testimonial-role">Mechanical Engineering</div>
+          </div>
+        </div>
 
-                Pick a resource, practice a paper
-                or ask AI and keep learning.
-
-            </p>
-
-            <div class="text-center">
-
-                <a
-                    href="{% url 'Notes' %}"
-                    class="cta-button">
-
-                    Start Learning →
-
-                </a>
-
-            </div>
-
-
-        {% else %}
-
-            <h2>
-
-                Your learning
-                starts here.
-
-            </h2>
-
-            <p>
-
-                Notes, papers, resources and AI
-                study help in one place.
-
-            </p>
-
-            <div class="text-center">
-
-                <a
-                    href="{% url 'register' %}"
-                    class="cta-button">
-
-                    Create Free Account →
-
-                </a>
-
-            </div>
-
-        {% endif %}
-
+      </div>
 
     </div>
 
+  </div>
+
 </section>
 
+<section class="cta-section">
 
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
+  <div class="cta-wrapper reveal">
 
-<script>
+    <h2 class="cta-title">
+      Ready to study smarter?
+    </h2>
 
-document.addEventListener("DOMContentLoaded", function () {
+    <p class="cta-desc">
+      Access organized study resources and make your exam preparation easier.
+    </p>
 
+    {% if request.user.is_authenticated %}
 
-    /* ==============================================
-       SCROLL REVEAL
-    ============================================== */
+    <a href="{% url 'Notes' %}" class="cta-btn">
+      Start studying →
+    </a>
 
-    const cards =
-        document.querySelectorAll(".reveal");
+    {% else %}
 
+    <a href="{% url 'register' %}" class="cta-btn">
+      Create free account →
+    </a>
 
-    const observer =
-        new IntersectionObserver(
+    {% endif %}
 
-            function(entries) {
+  </div>
 
-                entries.forEach(function(entry) {
+</section>
 
-                    if (entry.isIntersecting) {
-
-                        entry.target.classList.add(
-                            "visible"
-                        );
-
-                        observer.unobserve(
-                            entry.target
-                        );
-
-                    }
-
-                });
-
-            },
-
-            {
-                threshold: 0.15
-            }
-
-        );
-
-
-    cards.forEach(function(card, index) {
-
-        card.style.transitionDelay =
-            (index * 120) + "ms";
-
-        observer.observe(card);
-
-    });
-
-
-    /* ==============================================
-       MOUSE PARALLAX
-       DESKTOP ONLY
-    ============================================== */
-
-    const hero =
-        document.querySelector(".dynamic-hero");
-
-    const purple =
-        document.querySelector(".glow-purple");
-
-    const green =
-        document.querySelector(".glow-green");
-
-
-    if (hero && window.innerWidth > 768) {
-
-        hero.addEventListener(
-            "mousemove",
-            function(event) {
-
-                const x =
-                    (event.clientX /
-                    window.innerWidth) - .5;
-
-                const y =
-                    (event.clientY /
-                    window.innerHeight) - .5;
-
-
-                if (purple) {
-
-                    purple.style.transform =
-                        `translate(
-                            ${x * -40}px,
-                            ${y * -40}px
-                        )`;
-
-                }
-
-
-                if (green) {
-
-                    green.style.transform =
-                        `translate(
-                            ${x * 30}px,
-                            ${y * 30}px
-                        )`;
-
-                }
-
-            }
-        );
-
-    }
-
-
-    /* ==============================================
-       MOBILE TILT EFFECT
-    ============================================== */
-
-    const preview =
-        document.querySelector(".product-preview");
-
-
-    if (
-        preview &&
-        window.innerWidth <= 768
-    ) {
-
-        let lastScroll = 0;
-
-
-        window.addEventListener(
-            "scroll",
-            function() {
-
-                const current =
-                    window.scrollY;
-
-
-                const difference =
-                    current - lastScroll;
-
-
-                if (
-                    Math.abs(difference) > 3
-                ) {
-
-                    preview.style.transform =
-                        `translateY(
-                            ${Math.sin(current / 80) * 5}px
-                        )`;
-
-                }
-
-
-                lastScroll = current;
-
-            },
-            {
-                passive: true
-            }
-        );
-
-    }
-
-
-    /* ==============================================
-       TOUCH PARALLAX FOR MOBILE
-    ============================================== */
-
-    if (
-        hero &&
-        window.innerWidth <= 768
-    ) {
-
-        let touchStartX = 0;
-        let touchStartY = 0;
-
-
-        hero.addEventListener(
-            "touchstart",
-            function(event) {
-
-                touchStartX =
-                    event.touches[0].clientX;
-
-                touchStartY =
-                    event.touches[0].clientY;
-
-            },
-            {
-                passive: true
-            }
-        );
-
-
-        hero.addEventListener(
-            "touchmove",
-            function(event) {
-
-                const x =
-                    event.touches[0].clientX;
-
-                const y =
-                    event.touches[0].clientY;
-
-
-                const moveX =
-                    (x - touchStartX) * .15;
-
-                const moveY =
-                    (y - touchStartY) * .15;
-
-
-                if (purple) {
-
-                    purple.style.transform =
-                        `translate(
-                            ${moveX}px,
-                            ${moveY}px
-                        )`;
-
-                }
-
-            },
-            {
-                passive: true
-            }
-        );
-
-    }
-
-
-});
-
-</script>
+</div>
 
 {% endblock %}
 
+{% block extra_js %}
+<script>
+(function () {
+
+  const blobs = [
+    document.getElementById("blob-indigo"),
+    document.getElementById("blob-teal"),
+    document.getElementById("blob-rose")
+  ].filter(Boolean);
+
+  if (!blobs.length) return;
+
+  const strengths = [0.15, 0.08, 0.05];
+
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+
+  let currentX = mouseX;
+  let currentY = mouseY;
+
+  document.addEventListener("mousemove", function (e) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  function animate() {
+
+    currentX += (mouseX - currentX) * 0.03;
+    currentY += (mouseY - currentY) * 0.03;
+
+    const cx =
+      (currentX / window.innerWidth - 0.5) * 2;
+
+    const cy =
+      (currentY / window.innerHeight - 0.5) * 2;
+
+    blobs.forEach(function (blob, i) {
+
+      const tx = cx * 60 * (1 + i * 0.3);
+      const ty = cy * 40 * (1 + i * 0.2);
+
+      blob.style.transform =
+        `translate(${tx}px, ${ty}px)`;
+
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+})();
+
+
+(function () {
+
+  const elements =
+    document.querySelectorAll(".reveal");
+
+  if (!elements.length) return;
+
+  if (
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
+  ) {
+
+    elements.forEach(function (element) {
+      element.classList.add("visible");
+    });
+
+    return;
+  }
+
+  const observer =
+    new IntersectionObserver(
+      function (entries) {
+
+        entries.forEach(function (entry) {
+
+          if (entry.isIntersecting) {
+
+            entry.target.classList.add("visible");
+
+            observer.unobserve(
+              entry.target
+            );
+          }
+
+        });
+
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -40px 0px"
+      }
+    );
+
+  elements.forEach(function (element) {
+    observer.observe(element);
+  });
+
+})();
+</script>
+{% endblock %}

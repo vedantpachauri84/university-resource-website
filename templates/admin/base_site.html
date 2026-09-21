@@ -1,0 +1,25 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}AKTU Student Help | Admin{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'custom_admin/custom.css' %}">
+{% endblock %}
+
+{% block branding %}
+<div id="custom-branding">
+    <a href="{% url 'admin:index' %}">
+        AKTU Student Help
+    </a>
+</div>
+{% endblock %}
+
+{% block nav-global %}
+<div id="admin-home-button">
+    <a href="{% url 'home' %}">
+        Home →
+    </a>
+</div>
+{% endblock %}
