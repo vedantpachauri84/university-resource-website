@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 
 # In local development, values in this project's .env should take precedence
 # over stale or empty Windows user environment variables.
-load_dotenv(override=True)
+load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
