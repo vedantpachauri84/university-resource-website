@@ -75,7 +75,8 @@ TEMPLATES = [{
 }]
 WSGI_APPLICATION = "blogs.wsgi.application"
 ASGI_APPLICATION = "blogs.asgi.application"
-
+print("DATABASE_URL EXISTS:", bool(os.getenv("DATABASE_URL")))
+print("DATABASE_URL:", os.getenv("DATABASE_URL"))
 DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
 if DATABASE_URL:
     DATABASES = {"default": dj_database_url.parse(
