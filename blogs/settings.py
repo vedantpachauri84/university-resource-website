@@ -29,8 +29,14 @@ if not SECRET_KEY:
     else:
         raise ImproperlyConfigured("DJANGO_SECRET_KEY must be set when DEBUG=False.")
 
-ALLOWED_HOSTS = [host.strip() for host in (os.getenv("ALLOWED_HOSTS", "").strip() or "localhost,127.0.0.1").split(",")
-                 if host.strip()]
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv(
+        "ALLOWED_HOSTS",
+        "localhost,127.0.0.1,0.0.0.0"
+    ).split(",")
+    if host.strip()
+]
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if origin.strip()]
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
@@ -75,8 +81,7 @@ TEMPLATES = [{
 }]
 WSGI_APPLICATION = "blogs.wsgi.application"
 ASGI_APPLICATION = "blogs.asgi.application"
-print("DATABASE_URL EXISTS:", bool(os.getenv("DATABASE_URL")))
-print("DATABASE_URL:", os.getenv("DATABASE_URL"))
+
 DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
 if DATABASE_URL:
     DATABASES = {"default": dj_database_url.parse(
@@ -132,9 +137,10 @@ CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_HTTPONLY = True
+
 SESSION_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SAMESITE = "Lax"
-SECURE_SSL_REDIRECT = not DEBUG
+SECURE_SSL_REDIRECT = False
 SECURE_HSTS_SECONDS = 31_536_000 if not DEBUG else 0
 SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
 SECURE_HSTS_PRELOAD = not DEBUG

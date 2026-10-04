@@ -216,7 +216,7 @@ def analyze_paper(request, paper_id):
             os.unlink(path)
         if not paper_text:
             raise ValueError("No readable text was found in this PDF.")
-        result = ask_ai("""You are an expert university exam analyst. Analyse this exam paper. Return subject, important topics, frequently asked concepts, difficulty (Easy/Medium/Hard), and five concise study tips. Use Markdown headings and bullets . give 10 mcq like ask in exam in test format . Keep it under 300 words .\n\nPaper:\n""" + paper_text)
+        result = ask_ai("""solve all  question .  .\n\nPaper:\n""" + paper_text)
     except (requests.RequestException, ValueError, OSError) as exc:
         result = f"We couldn't analyse this paper: {exc}"
     except Exception:
