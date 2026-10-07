@@ -3,7 +3,15 @@ import os
 import re
 import tempfile
 from django.core.paginator import Paginator
+import logging
 
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.views.decorators.http import require_http_methods
+
+
+logger = logging.getLogger(__name__)
 import requests
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout
@@ -49,7 +57,7 @@ from django.shortcuts import render, redirect
 # from django.core.mail import send_mail
 from django.urls import reverse
 from django.conf import settings
-from django_ratelimit.decorators import ratelimit
+
 
 
 
@@ -67,19 +75,36 @@ from django_ratelimit.decorators import ratelimit
 #     })
 
 
-@ratelimit(key='ip', rate='5/h', method='POST')
+
 @require_http_methods(["GET", "POST"])
 def register(request):
     """User registration."""
+
     if request.user.is_authenticated:
         return redirect("home")
+
+    if request.method == "POST":
+        ip = request.META.get("REMOTE_ADDR", "unknown")
+        key = f"register-rate:{ip}"
+
+        try:
+            attempts = cache.incr(key)
+        except ValueError:
+            cache.set(key, 1, timeout=3600)
+            attempts = 1
+
+        if attempts > 5:
+            messages.error(
+                request,
+                "Too many registration attempts. Please try again later."
+            )
+            return redirect("register")
 
     form = RegistrationForm(request.POST or None)
 
     if request.method == "POST":
         if form.is_valid():
             try:
-                # Create active user
                 User.objects.create_user(
                     username=form.cleaned_data["username"],
                     email=form.cleaned_data["email"],
@@ -216,7 +241,7 @@ def analyze_paper(request, paper_id):
             os.unlink(path)
         if not paper_text:
             raise ValueError("No readable text was found in this PDF.")
-        result = ask_ai("""solve all  question .  .\n\nPaper:\n""" + paper_text)
+        result = ask_ai("""solve all 2 and 3 and 5  marks question   .\n\nPaper:\n""" + paper_text)
     except (requests.RequestException, ValueError, OSError) as exc:
         result = f"We couldn't analyse this paper: {exc}"
     except Exception:
