@@ -10,6 +10,7 @@ import cloudinary
 import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
+from requests import session
 
 # In local development, values in this project's .env should take precedence
 # over stale or empty Windows user environment variables.
@@ -133,11 +134,11 @@ cloudinary.config(**CLOUDINARY_STORAGE, secure=True)
 
 CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache", "LOCATION": "aktu-student-help"}}
 
-# Enable HTTPS-only protections automatically outside local development.
+
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_HTTPONLY = True
-
+SESSION_COOKIE_AGE=50000
 SESSION_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SAMESITE = "Lax"
 SECURE_SSL_REDIRECT = False
@@ -145,6 +146,7 @@ SECURE_HSTS_SECONDS = 31_536_000 if not DEBUG else 0
 SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
 SECURE_HSTS_PRELOAD = not DEBUG
 SECURE_CONTENT_TYPE_NOSNIFF = True
+SESSION_COOKIE_NAME='vedant'
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 X_FRAME_OPTIONS = "DENY"
 LOGIN_URL = 'login'

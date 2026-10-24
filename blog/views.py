@@ -21,7 +21,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.cache import cache
 from django.core.mail import send_mail
 from django.db import transaction
-from django.http import HttpResponseNotAllowed, JsonResponse
+from django.http import HttpResponseNotAllowed, JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.utils.encoding import force_str
@@ -99,7 +99,6 @@ def register(request):
                 "Too many registration attempts. Please try again later."
             )
             return redirect("register")
-
     form = RegistrationForm(request.POST or None)
 
     if request.method == "POST":
@@ -271,3 +270,5 @@ def chatbot(request):
     except Exception:
         return JsonResponse({"error": "The AI service is temporarily unavailable."}, status=503)
     return JsonResponse({"reply": reply})
+def ok(request):
+    return HttpResponse("OK")
