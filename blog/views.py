@@ -4,12 +4,14 @@ import re
 import tempfile
 from django.core.paginator import Paginator
 import logging
+from rest_framework.response import Response
 
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
-
+from rest_framework.decorators import api_view,parser_classes
+from rest_framework.parsers import FormParser, MultiPartParser, FileUploadParser
 
 logger = logging.getLogger(__name__)
 import requests
@@ -21,7 +23,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.cache import cache
 from django.core.mail import send_mail
 from django.db import transaction
-from django.http import HttpResponseNotAllowed, JsonResponse, HttpResponse
+from django.http import HttpResponseNotAllowed, JsonResponse, HttpResponse, request
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.utils.encoding import force_str
@@ -39,7 +41,7 @@ from django.shortcuts import render
 # from rest_framework import status
 
 from .models import Notes
-# from .serializers import personmodelserializwers
+from .serializers import NotesSerializer
 
 @require_GET
 def home(request):
@@ -180,18 +182,29 @@ def paper(request):
     page=paginator.get_page(1)
     return render(request, "blog/paper.html", {"papers": page, "years": Paper.objects.values_list("year", flat=True).distinct().order_by("-year"), "titles": Paper.objects.values_list("title", flat=True).distinct().order_by("title"), "selected_year": year, "selected_title": title})
 
-
 @login_required
 @require_GET
 def notes_list(request):
-    notes = Notes.objects.all().order_by("Subject", "title")
+    notes = Notes.objects.filter(
+        user__username="Vedant"
+    ).order_by("Subject", "title")
+
     subject = request.GET.get("subject", "")
     if subject:
         notes = notes.filter(Subject=subject)
+
     paginator = Paginator(notes, 3)
-    # page_number = request.GET.get("page")
-    page = paginator.get_page(1)
-    return render(request, "blog/Notes.html", {"Notes": page, "subjects": Notes.objects.values_list("Subject", flat=True).distinct().order_by("Subject"), "selected_subject": subject})
+    page = paginator.get_page(request.GET.get("page", 1))
+
+    return render(request, "blog/Notes.html", {
+        "Notes": page,
+        "subjects": Notes.objects.filter(
+            user__username="Vedant"
+        ).values_list(
+            "Subject", flat=True
+        ).distinct().order_by("Subject"),
+        "selected_subject": subject
+    })
 
 
 @login_required
@@ -272,3 +285,42 @@ def chatbot(request):
     return JsonResponse({"reply": reply})
 def ok(request):
     return HttpResponse("OK")
+# @api_view(["GET","POST"])
+# @parser_classes([MultiPartParser,FormParser])
+# def api_notes(request,Subject):
+#     if request.method == "POST":
+#         print(request.data)
+#         data=NotesSerializer(data=request.data)
+#         print(data)
+#         if data.is_valid():
+#             data.save(Subject=Subject)
+#             return Response(data.data)
+#         else:
+#             return Response(data.errors,status=403)
+#     notes= Notes.objects.filter(Subject=Subject)
+#     data=NotesSerializer(notes,many=True)
+#     return Response(data.data)
+@login_required
+def notes_upload(request):
+    if request.method == "POST":
+        title=request.POST.get("title")
+        subject=request.POST.get("Subject")
+        file=request.FILES.get("file")
+        Notes.objects.create(title=title,Subject=subject,file=file,user=request.user)
+        notes=Notes.objects.filter(user=request.user)
+        return redirect('notes_upload')
+
+    notes=Notes.objects.filter(user=request.user)
+    return (render(request, "blog/notes_upload.html", {"notes": notes}))
+@login_required
+def delete_note(request, id):
+    if request.method == "POST":
+        note = get_object_or_404(
+            Notes,
+            id=id,
+            user=request.user
+        )
+        note.delete()
+
+    return redirect('notes_upload')
+

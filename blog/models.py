@@ -24,6 +24,7 @@ class Notes(models.Model):
     title = models.CharField(max_length=100)
     Subject = models.CharField(max_length=100)
     file=CloudinaryField('file', resource_type='raw',format='pdf')
+    user=models.ForeignKey(User, on_delete=models.CASCADE,null=True)
     def __str__(self):
         return self.title
 class Resources(models.Model):

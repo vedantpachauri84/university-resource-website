@@ -2,6 +2,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import path
 
 from . import views
+from .views import notes_upload
 
 urlpatterns = [
     path('about/', views.about, name='about'),
@@ -23,4 +24,7 @@ urlpatterns = [
     path("reset/<uidb64>/<token>/", auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
     path("reset/done/", auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
     path("ok", views.ok, name="ok"),
+    # path('api/notes/<str:Subject>',views.api_notes, name='api_notes'),
+    # path('notes/upload',views.notes_upload,name='notes_upload'),
+path('notes/delete/<int:id>/', views.delete_note, name='delete_note'),
 ]

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Notes
-class personmodelserializwers(serializers.ModelSerializer):
+class NotesSerializer(serializers.ModelSerializer):
+    file=serializers.FileField()
     class Meta:
         model=Notes
-        fields=('title','Subject','file')
+        fields=['title','Subject','file']

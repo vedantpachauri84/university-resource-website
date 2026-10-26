@@ -303,6 +303,7 @@
         </div>
 
         <div class="filter-box">
+            <a href="{% url 'notes_upload' %}">Upload Notes</a>
 
             <form method="GET" class="row g-3 align-items-center">
 
@@ -431,7 +432,7 @@
                         No notes were found for the selected subject.
                     </p>
 
-                    <a href="{% url 'notes_list' %}"
+                    <a href="{% url 'Notes' %}"
                        class="btn btn-primary download-btn">
                         🔄 View All Notes
                     </a>

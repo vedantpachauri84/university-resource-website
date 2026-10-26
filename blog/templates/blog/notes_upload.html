@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Notes</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5fb;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #1e3150;
+            color: white;
+            padding: 20px 8%;
+        }
+
+        header h1 {
+            font-size: 28px;
+        }
+
+        header span {
+            color: #78a6ff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(30, 49, 80, 0.07);
+            border: 1px solid #e2e8f0;
+        }
+
+        .card h2 {
+            font-size: 24px;
+            margin-bottom: 6px;
+            color: #1e3150;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+            color: #334155;
+        }
+
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            background: white;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #3674e8;
+            box-shadow: 0 0 0 3px rgba(54, 116, 232, 0.12);
+        }
+
+        .hint {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #326be0;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #2454b8;
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 18px;
+            margin-top: 22px;
+        }
+
+        .note {
+            padding: 22px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #fbfdff;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .note:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(30, 49, 80, 0.08);
+        }
+
+        .note h3 {
+            color: #1e3150;
+            font-size: 19px;
+            margin-bottom: 8px;
+            overflow-wrap: anywhere;
+        }
+
+        .subject {
+            display: inline-block;
+            background: #e8efff;
+            color: #2858b5;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .download {
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            background: #eaf1ff;
+            color: #245bc7;
+            padding: 10px;
+            border-radius: 7px;
+            font-weight: bold;
+        }
+
+        .download:hover {
+            background: #d8e5ff;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 35px 15px;
+            background: #f8fafc;
+            border-radius: 10px;
+            color: #64748b;
+            margin-top: 20px;
+        }
+
+        .empty h3 {
+            color: #334155;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 18px 20px;
+            }
+
+            .container {
+                margin: 22px auto;
+                padding: 0 12px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>My <span>Notes</span></h1>
+</header>
+
+<main class="container">
+
+    <section class="card">
+        <h2>Upload Notes</h2>
+        <p class="subtitle">
+            Upload your study materials and keep everything organized.
+        </p>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="title">Note Title</label>
+                <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    placeholder="e.g. Python Basics"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <input
+                    type="text"
+                    name="Subject"
+                    id="subject"
+                    placeholder="e.g. Python"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="file">Choose PDF File</label>
+                <input
+                    type="file"
+                    name="file"
+                    id="file"
+                    accept=".pdf,application/pdf"
+                    required
+                >
+                <p class="hint">PDF files only.</p>
+            </div>
+
+            <button type="submit">Upload Notes</button>
+        </form>
+    </section>
+
+    <section class="card">
+        <h2>Your Notes</h2>
+        <p class="subtitle">Access your uploaded study materials.</p>
+
+        {% for t in notes %}
+            <div class="notes-grid">
+                <article class="note">
+                    <h3>{{ t.title }}</h3>
+
+                    <span class="subject">
+                        {{ t.Subject }}
+                    </span>
+
+                    {% if t.file %}
+                        <a
+                            class="download"
+                            href="{{ t.file.url }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            View / Download PDF
+                        </a>
+                    {% else %}
+                        <p>No file attached.</p>
+                    {% endif %}
+                </article>
+            </div>
+        <form method="POST"
+      action="{% url 'delete_note' t.id %}"
+      onsubmit="return confirm('Are you sure you want to delete this note?');">
+
+    {% csrf_token %}
+    <button type="submit" class="delete-btn">Delete Note</button>
+</form>
+        {% empty %}
+            <div class="empty">
+                <h3>No notes uploaded yet</h3>
+                <p>Upload your first PDF to get started!</p>
+            </div>
+        {% endfor %}
+    </section>
+
+</main>
+
+</body>
+</html>
