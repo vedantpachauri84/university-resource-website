@@ -25,6 +25,6 @@ urlpatterns = [
     path("reset/done/", auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
     path("ok", views.ok, name="ok"),
     # path('api/notes/<str:Subject>',views.api_notes, name='api_notes'),
-    # path('notes/upload',views.notes_upload,name='notes_upload'),
+     path('notes/upload',views.notes_upload,name='notes_upload'),
 path('notes/delete/<int:id>/', views.delete_note, name='delete_note'),
 ]
